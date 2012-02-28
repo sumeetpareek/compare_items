@@ -1,0 +1,40 @@
+@CHARSET "UTF-8";
+
+#compare_cart {
+  display: none;
+  background-color: gray;
+  z-index: 2;
+}
+
+/**div #block-block-1  {
+	width: 100%;
+	background-color: gray;
+	z-index: 2;
+}**/
+
+/**#compare_block  {
+  display: inline;
+}**/
+
+.div_image  {
+	display: inline;
+	margin: 10px;
+}
+
+.image {
+  display: inline;
+	border: 1px solid #ccc;
+}
+
+#aclose:HOVER, #aclearlist:HOVER {
+	cursor: pointer;
+}
+
+.remove_item {
+	cursor: pointer;
+}
+
+.compare_cart_options_css {
+  margin: 5px;
+  display: inline;
+} 
