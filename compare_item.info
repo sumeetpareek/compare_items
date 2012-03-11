@@ -1,1 +1,5 @@
-name = compare_item
+name = Compare
+description = Allow users to compare similar type of content
+core = 7.x
+version = 7.x-dev
+package = Compare
