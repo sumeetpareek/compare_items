@@ -1,5 +1,4 @@
 <?php
-
 /**
  * 
  * Implements hook_init().
@@ -138,7 +137,6 @@ function compare_item_views_pre_render($view)  {
 		echo 'cannot add to compare';
 	}
 }
-
 /**
  * Implements hook_node_view().
  */
@@ -178,7 +176,6 @@ function get_image()  {
 //        dsm($uri);
 //  drupal_json_output($image_id . " " . $select_fid_query->rowCount() . " " . $select_image_query->rowCount() . " " . $uri['uri']);
   drupal_json_output($uri['filename']);
-
 //	$result = db_query('SELECT nid FROM node WHERE nid = :nid', array(':nid' => 1));
 //  foreach ($result as $id) {
 //  	
@@ -189,4 +186,4 @@ function get_image()  {
 //
 //function compare_block()  {
 //	$form['']
-//}
+//
