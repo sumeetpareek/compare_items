@@ -1,6 +1,5 @@
 <?php
 /**
- * 
  * Implements hook_init().
  */
 function compare_item_init() {
@@ -11,7 +10,6 @@ function compare_item_init() {
 }
 
 /**
- * 
  * Implements hook_menu().
  */
 function compare_item_menu() {
@@ -23,9 +21,8 @@ function compare_item_menu() {
 //	 'access arguments' => TRUE,
 //	 'type' => MENU_CALLBACK, 
 //	);
-	
-	$items['get_image'] = array(
-	 'page callback' => 'get_image',
+	$items['compare_item_get_image'] = array(
+	 'page callback' => 'compare_item_get_image',
 	 'access arguments' => TRUE,
 	 'type' => MENU_CALLBACK,
 	);
@@ -40,10 +37,7 @@ function compare_item_menu() {
 }
 
 /**
- * 
  * Implements hook_help().
- * @param $path
- * @param $arg
  */
 function compare_item_help($path, $arg)  {
 	switch ($path) {
@@ -54,7 +48,7 @@ function compare_item_help($path, $arg)  {
 }
 
 /**
- * Implement hook_views_api().
+ * Implements hook_views_api().
  */
 function compare_item_views_api($module, $api) {
   if ($module == 'views' && $api == 'views_default') {
@@ -80,11 +74,7 @@ function compare_item_permission() {
 }
 
 /**
- * 
  * Implements hook_form_alter().
- * @param $form
- * @param $form_state
- * @param $form_id
  */
 function compare_item_form_alter(&$form, &$form_state, $form_id) {
 //	dsm($form);
@@ -119,7 +109,7 @@ function compare_item_node_type_submit($form, &$form_state)  {
 }
 
 /**
- * Implements of hook_views_pre_render().
+ * Implements hook_views_pre_render().
  */
 function compare_item_views_pre_render($view)  {
 //	dsm($view->result);
@@ -140,6 +130,7 @@ function compare_item_views_pre_render($view)  {
 /**
  * Implements hook_node_view().
  */
+<<<<<<< HEAD
 function compare_item_node_view($node, $view_mode, $langcode) {
   drupal_set_message("hello");
 	dsm($node);
@@ -147,12 +138,20 @@ function compare_item_node_view($node, $view_mode, $langcode) {
 //		$node->content['body'][0]['#markup'] .= "<input style='display:inline' type='checkbox' id='$node->nid' class='compare'/>&nbsp;<label style='display:inline'>Add to compare</label>";
 	}
 }
+=======
+//function compare_item_node_view($node, $view_mode, $langcode) {
+////	dsm($node);
+//	if (($node->type == 'cars') && (variable_get('is_compare') != '0') && (variable_get('is_teaser_compare') != '0')) {
+//		$node->content['body'][0]['#markup'] .= "<input style='display:inline' type='checkbox' id='$node->nid' class='compare'/>&nbsp;<label style='display:inline'>Add to compare</label>";
+//	}
+//}
+>>>>>>> d37a702186285da4ceffa6a05c77461f89590844
 
 /**
  * 
  * Writes the image uri
  */
-function get_image()  {
+function compare_item_get_image()  {
 	$image_id = (int)$_GET['id'];
 //	echo $image_id;
   $select_fid_query = db_select('file_usage', 'fu')
@@ -176,7 +175,19 @@ function get_image()  {
 //  dsm($select_image_query);
 //        dsm($uri);
 //  drupal_json_output($image_id . " " . $select_fid_query->rowCount() . " " . $select_image_query->rowCount() . " " . $uri['uri']);
+<<<<<<< HEAD
   drupal_json_output($uri['filename']);
+=======
+//  drupal_json_output($uri['filename']);
+
+//  if ($uri['uri']==null) {
+//  	$image_url=url('sites/default/files/default_images'.$uri['filename'], array('absolute'=>true));	
+//  }
+//  else {
+  $image_url=url('sites/default/files/'.file_uri_target($uri['uri']), array('absolute'=>true));
+//  }
+  drupal_json_output($image_url);
+>>>>>>> d37a702186285da4ceffa6a05c77461f89590844
 //	$result = db_query('SELECT nid FROM node WHERE nid = :nid', array(':nid' => 1));
 //  foreach ($result as $id) {
 //  	
@@ -184,7 +195,187 @@ function get_image()  {
 //	drupal_json_output($id->nid);
 //  dsm($result);
 }
+<<<<<<< HEAD
 //
 //function compare_block()  {
 //	$form['']
 //
+=======
+
+/**
+ * Implements hook_block_info().
+ */
+function compare_item_block_info() {
+  $blocks['compare-item-list'] = array(
+    'info' => t('Compare List'),
+  );
+  return $blocks;
+}
+ 
+/**
+ * Implements hook_block_view().
+ */
+function compare_item_block_view($delta='') {
+  $block = array();
+  switch ($delta) {
+    case 'compare-item-list':
+    	//drupal_add_js(drupal_get_path('module', 'compare_item').'/js/compare_item.js');
+      $block['subject'] = t('Compare List');
+      $block['content'] = compare_item_contents();
+      break;
+  }
+//  print_r($block);
+  return $block;
+}
+ 
+/**
+ * custom html block
+ * @return string
+ */
+function compare_item_contents() {
+  return '
+  <div id="compare_cart">
+  <div id="compare_block" class="div_image">
+    <div class="div_image" name="compare_item" id="compare_item">
+      <img src="/compare/sites/all/modules/compare_item/images/add_item.jpg" class="image" height="50px" width="50px" /><span class="remove_item"></span>
+    </div>
+    <div class="div_image" name="compare_item" id="compare_item">
+      <img src="/compare/sites/all/modules/compare_item/images/add_item.jpg" class="image" height="50px" width="50px" /><span class="remove_item"></span>
+    </div>
+    <div class="div_image" name="compare_item" id="compare_item">
+      <img src="/compare/sites/all/modules/compare_item/images/add_item.jpg" class="image" height="50px" width="50px" /><span class="remove_item"></span>
+    </div>
+    <div class="div_image" name="compare_item" id="compare_item">
+      <img src="/compare/sites/all/modules/compare_item/images/add_item.jpg" class="image" height="50px" width="50px" /><span class="remove_item"></span>
+    </div>
+  </div>
+  <div id="compare_cart_options" class="div_image">
+    <a id="aclose" class="compare_cart_options_css">Close</a><label class="compare_cart_options_css">|</label><a id="aclearlist" class="compare_cart_options_css">Clear list</a><button id="btn_compare" class="compare_cart_options_css">Compare</button>
+  </div>
+</div>
+'
+  ;
+}
+
+/*Creating new field type to display the Add to compare checkbox; 
+*/
+
+/**
+ * Implements hook_field_info().
+ */
+function compare_item_field_info() {
+	return array(
+		'compare_item_compare' => array(
+	      'label' => t('Compare'), 
+	      'description' => t('This field adds the add to compare checkbox to comparable items.'),
+	      'default_widget' => 'compare_item_compare_widget', 
+	      'default_formatter' => 'compare_item_compare_formatter',
+	    )
+	);
+}
+
+/**
+ * Implements hook_field_widget_info().
+ */
+function compare_item_field_widget_info() {
+	return array(
+		'compare_item_compare_widget' => array(
+			'label' => t('Compare checkbox'),
+		  'field types' => array('compare_item_compare'),
+			'behaviors' => array(
+				'multiple values' => FIELD_BEHAVIOR_DEFAULT,
+				'default value' => FIELD_BEHAVIOR_DEFAULT,
+			)
+		),
+	);	
+}
+
+/**
+ * Implements hook_field_widget_form().
+ */
+function compare_item_field_widget_form(&$form,&$form_state,$field,$instance,$langcode,$items,$delta,$element) {
+	$compareValue = isset($items[$delta]['comparable']) ? $items[$delta]['comparable'] : '';
+
+	$element += array(
+	    '#delta' => $delta,
+	  );
+  dsm($items[$delta]['comparable']);
+  $element['comparable'] = array(
+  );
+  switch ($instance['widget']['type'])
+  {
+    case 'compare_item_compare_widget':
+          $element['comparable'] = array(
+            '#title' => t('Comparable'),
+            '#type' => 'checkbox',
+            '#default_value' => $compareValue,
+            );
+ 			break;
+    default:
+      break;
+  }
+//	$element += array(
+//		'#title' => t('Comparable'),
+//    '#type' => 'checkbox',
+//    '#default_value' => isset($items['comparable']) ? $items['comparable'] : '',
+//  );
+  dsm($element);
+  return $element;
+}
+
+/**
+ * Implements hook_field_is_empty().
+ */
+function compare_item_field_is_empty($item, $field) {
+  // has the user checked off the checkbox?
+//  dsm($item['comparable']);
+  if (empty($item['comparable'])) {
+    return TRUE;
+  }
+  return FALSE;
+}
+
+/**
+ * Implements hook_field_formatter_info().
+ */
+function compare_item_field_formatter_info() {
+	return array(
+	    'compare_item_compare_formatter' => array(
+	      'label' => t('Default checkbox'), 
+	      'field types' => array('compare_item_compare'),
+	    ),
+	  );
+}
+
+//function compare_item_value_info() {
+//	return array(0 => 'false', 1 => 'true');
+//}
+
+/**
+ * Implements hook_field_formatter_view().
+ */
+function compare_item_field_formatter_view($entity_type, $entity, $field, $instance, $langcode, $items, $display) {
+	$element = array();
+//	dsm($entity_type);
+//	dsm($entity);
+	dsm($entity);
+	$nid = $entity->nid;
+	$element[] = array(
+		'#markup' => "<input style='display:inline' type='checkbox' id='$nid' class='compare'/>&nbsp;<label style='display:inline'>Add to compare</label>",
+//		'#markup' => 'Je',
+	); 
+//	dsm($element);
+//	array(
+//	    'items' => array(
+//	      '#type' => 'container',
+//	      '#attributes' => array( 'class' => array( 'field-item') ),
+//	      'text' => array(
+//	        '#markup' => t('Making this comparable'),
+//	      ),
+//	    ),
+//  	); 
+   return $element;
+} 
+
+
+>>>>>>> d37a702186285da4ceffa6a05c77461f89590844

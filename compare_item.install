@@ -1,0 +1,19 @@
+<?php
+/**
+ * Implements hook_field_schema().
+ */
+function compare_item_field_schema($field) {
+	$columns = array(
+	    'comparable' => array(
+	    	'type' => 'int',
+	    	'length' => 1, 
+	    	'not null' => TRUE),
+  );
+  return array(
+    'columns' => $columns,
+    'indexes' => array(
+    	'comparable' => array('comparable'),
+    ),
+  );
+}
+?>

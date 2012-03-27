@@ -37,6 +37,11 @@
 						data: "id=" + encodeURI(checkbox_id),
 						success: function(result){
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+					
+					alert(result);
+>>>>>>> d37a702186285da4ceffa6a05c77461f89590844
 =======
 					
 					alert(result);
@@ -46,9 +51,16 @@
 								var image_element = document.getElementById(item.id).getElementsByTagName("img");
 								var span_element = document.getElementById(item.id).getElementsByTagName("span");
 <<<<<<< HEAD
+<<<<<<< HEAD
 								image_element[0].setAttribute("src", Drupal.settings.basePath + "sites/default/files/" + result);
 								span_element[0].setAttribute("title", "Remove");
 								span_element[0].innerHTML = "<img src='/compare/sites/default/files/close_button.jpg' />";
+=======
+								image_element[0].setAttribute("src", result);
+//								image_element[0].setAttribute("src", Drupal.settings.basePath + "sites/default/files/" + result);
+								span_element[0].setAttribute("title", "Remove");
+								span_element[0].innerHTML = "<img src='/compare/sites/all/modules/compare_item/images/remove.gif' />";
+>>>>>>> d37a702186285da4ceffa6a05c77461f89590844
 =======
 								image_element[0].setAttribute("src", result);
 //								image_element[0].setAttribute("src", Drupal.settings.basePath + "sites/default/files/" + result);
@@ -72,6 +84,11 @@
 					var remove_item_id = document.getElementById(id);
 					$("div#"+id).remove();
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+					
+//					$.cookie("item-id",null);
+>>>>>>> d37a702186285da4ceffa6a05c77461f89590844
 =======
 					
 //					$.cookie("item-id",null);
