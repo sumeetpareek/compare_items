@@ -1,6 +1,6 @@
 <?php
+
 /**
- * 
  * Implements hook_init().
  */
 function compare_item_init() {
@@ -11,7 +11,6 @@ function compare_item_init() {
 }
 
 /**
- * 
  * Implements hook_menu().
  */
 function compare_item_menu() {
@@ -39,10 +38,7 @@ function compare_item_menu() {
 }
 
 /**
- * 
  * Implements hook_help().
- * @param $path
- * @param $arg
  */
 function compare_item_help($path, $arg)  {
 	switch ($path) {
@@ -53,7 +49,7 @@ function compare_item_help($path, $arg)  {
 }
 
 /**
- * Implement hook_views_api().
+ * Implements hook_views_api().
  */
 function compare_item_views_api($module, $api) {
   if ($module == 'views' && $api == 'views_default') {
@@ -79,11 +75,7 @@ function compare_item_permission() {
 }
 
 /**
- * 
  * Implements hook_form_alter().
- * @param $form
- * @param $form_state
- * @param $form_id
  */
 function compare_item_form_alter(&$form, &$form_state, $form_id) {
 //	dsm($form);
@@ -118,7 +110,7 @@ function compare_item_node_type_submit($form, &$form_state)  {
 }
 
 /**
- * Implements of hook_views_pre_render().
+ * Implements hook_views_pre_render().
  */
 function compare_item_views_pre_render($view)  {
 //	dsm($view->result);
@@ -190,22 +182,9 @@ function compare_item_get_image()  {
 //	drupal_json_output($id->nid);
 //  dsm($result);
 }
-//
-//function compare_block()  {
-//	$form['']
-//
-
-
-
-
-
-
-/*
- * Adding the compare cart block
-*/
 
 /**
- * Implementation of hook_block_info().
+ * Implements hook_block_info().
  */
 function compare_item_block_info() {
   $blocks['compare-item-list'] = array(
@@ -215,7 +194,7 @@ function compare_item_block_info() {
 }
  
 /**
- * Implementation of hook_block_view().
+ * Implements hook_block_view().
  */
 function compare_item_block_view($delta='') {
   $block = array();
@@ -262,9 +241,9 @@ function compare_item_contents() {
 /*Creating new field type to display the Add to compare checkbox; 
 */
 
-/*
- * Tell Drupal about the field
-*/
+/**
+ * Implements hook_field_info().
+ */
 function compare_item_field_info() {
 	return array(
 		'compare_item_compare' => array(
@@ -275,9 +254,10 @@ function compare_item_field_info() {
 	    )
 	);
 }
-/*
- * Tell Drupal about the field widget
-*/
+
+/**
+ * Implements hook_field_widget_info().
+ */
 function compare_item_field_widget_info() {
 	return array(
 		'compare_item_compare_widget' => array(
@@ -290,9 +270,10 @@ function compare_item_field_widget_info() {
 		),
 	);	
 }
-/*
- * Tell Drupal how to display your widget
-*/
+
+/**
+ * Implements hook_field_widget_form().
+ */
 function compare_item_field_widget_form(&$form,&$form_state,$field,$instance,$langcode,$items,$delta,$element) {
 	$compareValue = isset($items[$delta]['comparable']) ? $items[$delta]['comparable'] : '';
 
@@ -322,9 +303,10 @@ function compare_item_field_widget_form(&$form,&$form_state,$field,$instance,$la
   dsm($element);
   return $element;
 }
-/*
- * Tell Drupal when the field is empty
-*/
+
+/**
+ * Implements hook_field_is_empty().
+ */
 function compare_item_field_is_empty($item, $field) {
   // has the user checked off the checkbox?
 //  dsm($item['comparable']);
@@ -334,8 +316,8 @@ function compare_item_field_is_empty($item, $field) {
   return FALSE;
 }
 
-/*
- * Tells Drupal about your custom field formatters.
+/**
+ * Implements hook_field_formatter_info().
  */
 function compare_item_field_formatter_info() {
 	return array(
@@ -345,12 +327,14 @@ function compare_item_field_formatter_info() {
 	    ),
 	  );
 }
+
 //function compare_item_value_info() {
 //	return array(0 => 'false', 1 => 'true');
 //}
-/*
- * Tells Drupal how to display the data in your field to the user.
- */ 
+
+/**
+ * Implements hook_field_formatter_view().
+ */
 function compare_item_field_formatter_view($entity_type, $entity, $field, $instance, $langcode, $items, $display) {
 	$element = array();
 //	dsm($entity_type);

@@ -1,4 +1,7 @@
 <?php
+/**
+ * Implements hook_field_schema().
+ */
 function compare_item_field_schema($field) {
 	$columns = array(
 	    'comparable' => array(
