@@ -15,6 +15,15 @@
 				
 				count++;
 				compare_count++;
+////alert($(".row-1 .col-1 .views-field .field-content img").attr("src"));
+////				if ($(".row-1 .col-1 .views-field .field-content img")) {
+////					alert($(".row-1 .col-1 .views-field .field-content img").attr("src"));
+////				}
+//				
+//				if($.cookie("item-id") == null) {
+//					$.cookie("item-id",checkbox_id);
+//					alert("A cookie is now set"+$.cookie("item-id"));
+//				}
 				
 				if (count == 4)	{
 					$(":checkbox").attr("disabled", true);
@@ -23,17 +32,29 @@
 				
 				$.ajax({
 						type: "GET",
-						url: Drupal.settings.basePath + '/get_image',
+						url: Drupal.settings.basePath + '/compare_item_get_image',
 						dataType: 'json',
 						data: "id=" + encodeURI(checkbox_id),
 						success: function(result){
+<<<<<<< HEAD
+=======
+					
+					alert(result);
+>>>>>>> d37a702186285da4ceffa6a05c77461f89590844
 
 								
 								var image_element = document.getElementById(item.id).getElementsByTagName("img");
 								var span_element = document.getElementById(item.id).getElementsByTagName("span");
+<<<<<<< HEAD
 								image_element[0].setAttribute("src", Drupal.settings.basePath + "sites/default/files/" + result);
 								span_element[0].setAttribute("title", "Remove");
 								span_element[0].innerHTML = "<img src='/compare/sites/default/files/close_button.jpg' />";
+=======
+								image_element[0].setAttribute("src", result);
+//								image_element[0].setAttribute("src", Drupal.settings.basePath + "sites/default/files/" + result);
+								span_element[0].setAttribute("title", "Remove");
+								span_element[0].innerHTML = "<img src='/compare/sites/all/modules/compare_item/images/remove.gif' />";
+>>>>>>> d37a702186285da4ceffa6a05c77461f89590844
 					}
 				
 				});
@@ -50,6 +71,11 @@
 					var id = $(this).parent().attr("id");
 					var remove_item_id = document.getElementById(id);
 					$("div#"+id).remove();
+<<<<<<< HEAD
+=======
+					
+//					$.cookie("item-id",null);
+>>>>>>> d37a702186285da4ceffa6a05c77461f89590844
 					
 					new_compare_item = $("<div/>");
 					new_compare_item.attr("id", "compare_item");
@@ -57,7 +83,7 @@
 					new_compare_item.addClass("div_image");
 					new_compare_item.append($("<img/>")
 							.addClass("image")
-							.attr("src", "/compare/sites/default/files/add_item.jpg")
+							.attr("src", "/compare/sites/all/modules/compare_item/images/add_item.jpg")
 							.attr("height", 50)
 							.attr("width", 50));
 					
@@ -88,16 +114,17 @@
 				count = 0;
 				compare_count = 0;
 				
+//				$.cookie("item-id",null);
 				
 				$("[name='compare_item']").each(function(index){
 					$(this).attr("id", "compare_item");
-					$(this).children("img").attr("src", "/compare/sites/default/files/add_item.jpg");
+					$(this).children("img").attr("src", "/compare/sites/all/modules/compare_item/images/add_item.jpg");
 					$(this).children("span").children("img").remove();
 				});
 				$(":disabled").attr("disabled", false);
 				$(":checked").attr("checked", false);
 			}
-			
+	
 			$("#aclose").click(function(){
 				reset_compare_list();
 				btn_compare_check_enabled();
