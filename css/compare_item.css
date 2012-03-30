@@ -1,7 +1,7 @@
 @CHARSET "UTF-8";
 
 #compare_cart {
-  display: none;
+/*  display: none;*/
   background-color: gray;
   z-index: 2;
 }

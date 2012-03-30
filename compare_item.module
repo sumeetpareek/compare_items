@@ -49,18 +49,6 @@ function compare_item_help($path, $arg)  {
 }
 
 /**
- * Implements hook_views_api().
- */
-function compare_item_views_api($module, $api) {
-  if ($module == 'views' && $api == 'views_default') {
-    return array(
-      'api' => 3,
-      'path' => drupal_get_path('module', 'compare') .'/includes/views',
-    );
-  }
-}
-
-/**
  * 
  * Implements hook_permission().
  */
@@ -110,24 +98,34 @@ function compare_item_node_type_submit($form, &$form_state)  {
 }
 
 /**
- * Implements hook_views_pre_render().
+ * Implements hook_views_api().
  */
-function compare_item_views_pre_render($view)  {
-//	dsm($view->result);
-  $flag_count = 0;
-	$filters = $view->filter;
-	foreach (array_keys($filters) as $filter_key) {
-		$flag_count++;
-	}
-	if ($flag_count <= 2) {
-//		foreach ($view->result AS $item => $value) {
-//			$view->result[$item]->compare = 'Add to Compare';
-//		}
-	}
-	else {
-		echo 'cannot add to compare';
-	}
+function compare_item_views_api($module, $api) {
+	 return array(
+	      'api' => 3,
+	      'path' => drupal_get_path('module', 'compare_item') .'/includes/views',
+   );	  
 }
+
+///**
+// * Implements hook_views_pre_render().
+// */
+//function compare_item_views_pre_render($view)  {
+////	dsm($view->result);
+//  $flag_count = 0;
+//	$filters = $view->filter;
+//	foreach (array_keys($filters) as $filter_key) {
+//		$flag_count++;
+//	}
+//	if ($flag_count <= 2) {
+////		foreach ($view->result AS $item => $value) {
+////			$view->result[$item]->compare = 'Add to Compare';
+////		}
+//	}
+//	else {
+//		echo 'cannot add to compare';
+//	}
+//}
 /**
  * Implements hook_node_view().
  */
@@ -200,17 +198,18 @@ function compare_item_block_view($delta='') {
   $block = array();
   switch ($delta) {
     case 'compare-item-list':
-    	//drupal_add_js(drupal_get_path('module', 'compare_item').'/js/compare_item.js');
+//		drupal_add_js(drupal_get_path('module', 'compare_item').'/js/compare_item.js');
       $block['subject'] = t('Compare List');
       $block['content'] = compare_item_contents();
       break;
   }
+  drupal_add_js(drupal_get_path('module', 'compare_item').'/js/load-selected-images.js');
 //  print_r($block);
   return $block;
 }
  
 /**
- * custom html block
+ * Custom html block
  * @return string
  */
 function compare_item_contents() {
@@ -280,7 +279,7 @@ function compare_item_field_widget_form(&$form,&$form_state,$field,$instance,$la
 	$element += array(
 	    '#delta' => $delta,
 	  );
-  dsm($items[$delta]['comparable']);
+//  dsm($items[$delta]['comparable']);
   $element['comparable'] = array(
   );
   switch ($instance['widget']['type'])
@@ -340,11 +339,24 @@ function compare_item_field_formatter_view($entity_type, $entity, $field, $insta
 //	dsm($entity_type);
 //	dsm($entity);
 	dsm($entity);
-	$nid = $entity->nid;
-	$element[] = array(
-		'#markup' => "<input style='display:inline' type='checkbox' id='$nid' class='compare'/>&nbsp;<label style='display:inline'>Add to compare</label>",
-//		'#markup' => 'Je',
-	); 
+	if($entity_type == "commerce_product") {
+		$pid = $entity->product_id.' '.$entity_type.' '.$entity->type;
+//		echo $pid;
+		$element[] = array(
+			'#markup' => "<input style='display:inline' type='checkbox' id='$pid' class='compare'/>&nbsp;<label style='display:inline'>Add to compare</label>",
+		);
+	}
+	elseif($entity_type == "node") {
+		$nid = $entity->nid.' '.$entity_type.' '.$entity->type;
+		$element[] = array(
+			'#markup' => "<input style='display:inline' type='checkbox' id='$nid' class='compare'/>&nbsp;<label style='display:inline'>Add to compare</label>",
+		);
+	}
+//	$nid = $entity->nid;
+//	$element[] = array(
+//		'#markup' => "<input style='display:inline' type='checkbox' id='$nid' class='compare'/>&nbsp;<label style='display:inline'>Add to compare</label>",
+////		'#markup' => 'Je',
+//	); 
 //	dsm($element);
 //	array(
 //	    'items' => array(
