@@ -1,5 +1,4 @@
 <?php
-
 /**
  * Implements hook_init().
  */
@@ -129,6 +128,7 @@ function compare_item_views_api($module, $api) {
 /**
  * Implements hook_node_view().
  */
+
 //function compare_item_node_view($node, $view_mode, $langcode) {
 ////	dsm($node);
 //	if (($node->type == 'cars') && (variable_get('is_compare') != '0') && (variable_get('is_teaser_compare') != '0')) {
@@ -164,6 +164,7 @@ function compare_item_get_image()  {
 //  dsm($select_image_query);
 //        dsm($uri);
 //  drupal_json_output($image_id . " " . $select_fid_query->rowCount() . " " . $select_image_query->rowCount() . " " . $uri['uri']);
+
 //  drupal_json_output($uri['filename']);
 
 //  if ($uri['uri']==null) {
@@ -180,6 +181,11 @@ function compare_item_get_image()  {
 //	drupal_json_output($id->nid);
 //  dsm($result);
 }
+
+//
+//function compare_block()  {
+//	$form['']
+//
 
 /**
  * Implements hook_block_info().
@@ -340,14 +346,16 @@ function compare_item_field_formatter_view($entity_type, $entity, $field, $insta
 //	dsm($entity);
 	dsm($entity);
 	if($entity_type == "commerce_product") {
-		$pid = $entity->product_id.' '.$entity_type.' '.$entity->type;
+//		$pid = $entity->product_id.' '.$entity_type.' '.$entity->type;//This is causing problem when removing items from compare list.
+			$pid = $entity->product_id;
 //		echo $pid;
 		$element[] = array(
 			'#markup' => "<input style='display:inline' type='checkbox' id='$pid' class='compare'/>&nbsp;<label style='display:inline'>Add to compare</label>",
 		);
 	}
 	elseif($entity_type == "node") {
-		$nid = $entity->nid.' '.$entity_type.' '.$entity->type;
+//		$nid = $entity->nid.' '.$entity_type.' '.$entity->type;//This is causing problem when removing items from compare list.
+		$nid = $entity->nid;
 		$element[] = array(
 			'#markup' => "<input style='display:inline' type='checkbox' id='$nid' class='compare'/>&nbsp;<label style='display:inline'>Add to compare</label>",
 		);
@@ -369,5 +377,3 @@ function compare_item_field_formatter_view($entity_type, $entity, $field, $insta
 //  	); 
    return $element;
 } 
-
-

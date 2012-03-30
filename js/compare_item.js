@@ -76,6 +76,7 @@
 				}
 				btn_compare_check_enabled();
 				
+
 				get_item_image(checkbox_id)
 //				$.ajax({
 //						type: "GET",
@@ -94,6 +95,7 @@
 //					}
 //				
 //				});
+
         
 				$("#compare_cart").slideDown(500, function(){
 					$(this).css("display", "static");
@@ -105,8 +107,10 @@
 			$(".remove_item").live('click', function(){
 				$(this).hide("fast", function(){
 					var id = $(this).parent().attr("id");
+					alert(id);
 					var remove_item_id = document.getElementById(id);
 					$("div#"+id).remove();
+
 				
 //Removing the current id from cookie
 						remove_item_cookie = $.cookie("compare_item_cookie").split(',');
@@ -122,6 +126,7 @@
 						$.cookie("compare_item_cookie", remove_item_cookie.join(','));
 						alert($.cookie("compare_item_cookie"));
 	//					$.cookie("item-id",null);
+
 					
 					new_compare_item = $("<div/>");
 					new_compare_item.attr("id", "compare_item");
@@ -132,7 +137,7 @@
 							.attr("src", "/compare/sites/all/modules/compare_item/images/add_item.jpg")
 							.attr("height", 50)
 							.attr("width", 50));
-					
+					alert(new_compare_item);
 					new_compare_item.append($("<span/>")
 							.addClass("remove_item")
 							.click(function(){

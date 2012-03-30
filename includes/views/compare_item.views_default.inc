@@ -238,11 +238,7 @@ function compare_item_views_default_views() {
 //  );
 //  
 ////  $handler->display->display_options['row_plugin'] = 'node';
-//  /* Relationship: Content: Referenced product */
-////	$handler->display->display_options['relationships']['field_basket_ref_product_id']['id'] = 'field_basket_ref_product_id';
-////	$handler->display->display_options['relationships']['field_basket_ref_product_id']['table'] = 'field_data_field_basket_ref';
-////	$handler->display->display_options['relationships']['field_basket_ref_product_id']['field'] = 'field_basket_ref_product_id';
-////	$handler->display->display_options['relationships']['field_basket_ref_product_id']['required'] = 1;
+
 //	$handler->display->display_options['empty']['empty_text']['id'] = 'empty_text';
 //  $handler->display->display_options['empty']['empty_text']['table'] = 'commerce_product';
 //  $handler->display->display_options['empty']['empty_text']['field'] = 'empty_text';
