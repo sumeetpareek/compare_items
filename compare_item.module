@@ -346,20 +346,20 @@ function compare_item_field_formatter_view($entity_type, $entity, $field, $insta
 //	dsm($entity);
 	dsm($entity);
 	if($entity_type == "commerce_product") {
-//		$pid = $entity->product_id.' '.$entity_type.' '.$entity->type;//This is causing problem when removing items from compare list.
+//		$pid = $entity->product_id.'-'.$entity_type.'-'.$entity->type;//This is causing problem when removing items from compare list.
 			$pid = $entity->product_id;
 //		echo $pid;
 		$element[] = array(
 			'#markup' => "<input style='display:inline' type='checkbox' id='$pid' class='compare'/>&nbsp;<label style='display:inline'>Add to compare</label>",
 		);
 	}
-	elseif($entity_type == "node") {
-//		$nid = $entity->nid.' '.$entity_type.' '.$entity->type;//This is causing problem when removing items from compare list.
-		$nid = $entity->nid;
-		$element[] = array(
-			'#markup' => "<input style='display:inline' type='checkbox' id='$nid' class='compare'/>&nbsp;<label style='display:inline'>Add to compare</label>",
-		);
-	}
+//	elseif($entity_type == "node") {
+//		$nid = $entity->nid.'-'.$entity_type.'-'.$entity->type;//This is causing problem when removing items from compare list.
+////		$nid = $entity->nid;
+//		$element[] = array(
+//			'#markup' => "<input style='display:inline' type='checkbox' id='$nid' class='compare'/>&nbsp;<label style='display:inline'>Add to compare</label>",
+//		);
+//	}
 //	$nid = $entity->nid;
 //	$element[] = array(
 //		'#markup' => "<input style='display:inline' type='checkbox' id='$nid' class='compare'/>&nbsp;<label style='display:inline'>Add to compare</label>",

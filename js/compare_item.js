@@ -25,11 +25,11 @@
 					success: function(result){
 				alert(result);
 								var image_element = document.getElementById(id).getElementsByTagName("img");
-								alert("line 1"+image_element);
+//								alert("line 1"+image_element);
 								var span_element = document.getElementById(id).getElementsByTagName("span");
-								alert("line 2");
+//								alert("line 2");
 								image_element[0].setAttribute("src",result);
-								alert("line 3");
+//								alert("line 3");
 								span_element[0].setAttribute("title", "Remove");
 								span_element[0].innerHTML = "<img src='/compare/sites/all/modules/compare_item/images/remove.gif' />";
 					}
@@ -199,6 +199,21 @@
 				}
 				return;
 			}
+			
+			$("#btn_compare").click(function() {
+				var link_compare_page="http://localhost/compare/comparepage?products=";
+				$("[name='compare_item']").each(function(index){
+//					alert("sdsd");
+//					alert($(this).attr("id"));
+					if($(this).attr("id") != "compare_item"){
+//						alert($(this).attr("id"));
+						link_compare_page += $(this).attr("id") + ",";
+					}
+				});
+//				alert(link_compare_page);
+				window.location=link_compare_page;
+			});
+			
 	}
 	
 	Drupal.behaviors.compare = {
