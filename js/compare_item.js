@@ -6,6 +6,18 @@
 //			compare_item_cookie = $.cookie("compare_item_cookie") ? $.cookie("compare_item_cookie").split(',') : new Array();
 			document.getElementById("btn_compare").disabled = true;
 			
+			var product_class_list = $(".content .view-display-id-page").attr("class");
+			var product_class_list_array = product_class_list.split(" ");
+			var checkbox_id;
+			
+//			alert(product_class_list_array[4]);
+			$("#compare_cart").attr("class",product_class_list_array[4]);
+			$(".compare").each(function(){
+				checkbox_id = $(this).attr("id");
+//				alert("Checkbox id"+checkbox_id);
+				$("#"+checkbox_id).parents("div.views-field").attr("id",checkbox_id);
+			});
+			
 			if($.cookie("compare_item_cookie") != null) {
 				compare_item_cookie = $.cookie("compare_item_cookie").split(',');
 				alert("Already set cookie is: "+compare_item_cookie);
@@ -201,13 +213,13 @@
 			}
 			
 			$("#btn_compare").click(function() {
-				var link_compare_page="http://localhost/compare/comparepage?products=";
+				var link_compare_page="http://localhost/compare/viewtest2";
 				$("[name='compare_item']").each(function(index){
 //					alert("sdsd");
 //					alert($(this).attr("id"));
 					if($(this).attr("id") != "compare_item"){
 //						alert($(this).attr("id"));
-						link_compare_page += $(this).attr("id") + ",";
+						link_compare_page += "\\"+$(this).attr("id");
 					}
 				});
 //				alert(link_compare_page);

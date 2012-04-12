@@ -3,10 +3,13 @@
  * Implements hook_init().
  */
 function compare_item_init() {
-  // Adds a js file to the module.
-  drupal_add_js(drupal_get_path('module', 'compare_item').'/js/compare_item.js');
-  // Adds a css file to the module.
-  drupal_add_css(drupal_get_path('module', 'compare_item') . '/css/compare_item.css');
+//	dsm(arg(0));
+	if (arg(0) !== 'admin') {
+	  // Adds a js file to the module.
+	  drupal_add_js(drupal_get_path('module', 'compare_item').'/js/compare_item.js');
+	  // Adds a css file to the module.
+	  drupal_add_css(drupal_get_path('module', 'compare_item') . '/css/compare_item.css');
+	}
 }
 
 /**
@@ -193,6 +196,8 @@ function compare_item_get_image()  {
 function compare_item_block_info() {
   $blocks['compare-item-list'] = array(
     'info' => t('Compare List'),
+  	'region' => 'highlighted',
+  	'status' => 1,
   );
   return $blocks;
 }
@@ -209,7 +214,7 @@ function compare_item_block_view($delta='') {
       $block['content'] = compare_item_contents();
       break;
   }
-  drupal_add_js(drupal_get_path('module', 'compare_item').'/js/load-selected-images.js');
+//  drupal_add_js(drupal_get_path('module', 'compare_item').'/js/load-selected-images.js');
 //  print_r($block);
   return $block;
 }
@@ -347,10 +352,10 @@ function compare_item_field_formatter_view($entity_type, $entity, $field, $insta
 	dsm($entity);
 	if($entity_type == "commerce_product") {
 //		$pid = $entity->product_id.'-'.$entity_type.'-'.$entity->type;//This is causing problem when removing items from compare list.
-			$pid = $entity->product_id;
-//		echo $pid;
+			$sku = $entity->sku;
+//		echo $sku;
 		$element[] = array(
-			'#markup' => "<input style='display:inline' type='checkbox' id='$pid' class='compare'/>&nbsp;<label style='display:inline'>Add to compare</label>",
+			'#markup' => "<input style='display:inline' type='checkbox' id='$sku' class='compare'/>&nbsp;<label style='display:inline'>Add to compare</label>",
 		);
 	}
 //	elseif($entity_type == "node") {

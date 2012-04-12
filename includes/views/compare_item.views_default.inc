@@ -9,7 +9,7 @@
  */
 function compare_item_views_default_views() {
   
-	$instances = field_info_instances(commerce_product);//returns list of all commerce_products,their fields,field details
+	$instances = field_info_instances('commerce_product');//returns list of all commerce_products,their fields,field details
 //	print_r($instances);
 
 $count=0;//using this for naming the different views,pages
@@ -73,60 +73,60 @@ foreach ($instances as $val) {//for getting the array of each bundle/product
 
 			foreach ($val as $value) {//for getting the array of each field in the current bundle/product
 	echo "FIELD NAME: ";
-			  print_r($value[field_name]);
+			  print_r($value['field_name']);
 	echo "\n";
 				//add a field only if its not the commerce price field or the compare type field
-				if($value[field_name] != "commerce_price" && $value[widget][type] != "compare_item_compare_widget") {
+				if($value['field_name'] != "commerce_price" && $value['widget']['type'] != "compare_item_compare_widget") {
 	echo "THE OTHER FIELD NAME: ";
-				  print_r($value[field_name]);
+				  print_r($value['field_name']);
 	echo "\n";
 
-		   		  $handler->display->display_options['fields'][$value[field_name]]['id'] = $value[field_name];
-				  	$handler->display->display_options['fields'][$value[field_name]]['table'] = 'field_data_'.$value[field_name];
-						$handler->display->display_options['fields'][$value[field_name]]['field'] = $value[field_name];
+		   		  $handler->display->display_options['fields'][$value['field_name']]['id'] = $value['field_name'];
+				  	$handler->display->display_options['fields'][$value['field_name']]['table'] = 'field_data_'.$value['field_name'];
+						$handler->display->display_options['fields'][$value['field_name']]['field'] = $value['field_name'];
 					//	$handler->display->display_options['fields']['field_pd_color']['label'] = '';
-						$handler->display->display_options['fields'][$value[field_name]]['alter']['alter_text'] = 0;
-						$handler->display->display_options['fields'][$value[field_name]]['alter']['make_link'] = 0;
-						$handler->display->display_options['fields'][$value[field_name]]['alter']['absolute'] = 0;
-						$handler->display->display_options['fields'][$value[field_name]]['alter']['external'] = 0;
-						$handler->display->display_options['fields'][$value[field_name]]['alter']['replace_spaces'] = 0;
-						$handler->display->display_options['fields'][$value[field_name]]['alter']['trim_whitespace'] = 0;
-						$handler->display->display_options['fields'][$value[field_name]]['alter']['nl2br'] = 0;
-						$handler->display->display_options['fields'][$value[field_name]]['alter']['word_boundary'] = 1;
-						$handler->display->display_options['fields'][$value[field_name]]['alter']['ellipsis'] = 1;
-						$handler->display->display_options['fields'][$value[field_name]]['alter']['more_link'] = 0;
-						$handler->display->display_options['fields'][$value[field_name]]['alter']['strip_tags'] = 0;
-						$handler->display->display_options['fields'][$value[field_name]]['alter']['trim'] = 0;
-						$handler->display->display_options['fields'][$value[field_name]]['alter']['html'] = 0;
-						$handler->display->display_options['fields'][$value[field_name]]['element_label_colon'] = 0;
-						$handler->display->display_options['fields'][$value[field_name]]['element_default_classes'] = 1;
-						$handler->display->display_options['fields'][$value[field_name]]['hide_empty'] = 0;
-						$handler->display->display_options['fields'][$value[field_name]]['empty_zero'] = 0;
-						$handler->display->display_options['fields'][$value[field_name]]['hide_alter_empty'] = 1;
-						$handler->display->display_options['fields'][$value[field_name]]['field_api_classes'] = 0;
+						$handler->display->display_options['fields'][$value['field_name']]['alter']['alter_text'] = 0;
+						$handler->display->display_options['fields'][$value['field_name']]['alter']['make_link'] = 0;
+						$handler->display->display_options['fields'][$value['field_name']]['alter']['absolute'] = 0;
+						$handler->display->display_options['fields'][$value['field_name']]['alter']['external'] = 0;
+						$handler->display->display_options['fields'][$value['field_name']]['alter']['replace_spaces'] = 0;
+						$handler->display->display_options['fields'][$value['field_name']]['alter']['trim_whitespace'] = 0;
+						$handler->display->display_options['fields'][$value['field_name']]['alter']['nl2br'] = 0;
+						$handler->display->display_options['fields'][$value['field_name']]['alter']['word_boundary'] = 1;
+						$handler->display->display_options['fields'][$value['field_name']]['alter']['ellipsis'] = 1;
+						$handler->display->display_options['fields'][$value['field_name']]['alter']['more_link'] = 0;
+						$handler->display->display_options['fields'][$value['field_name']]['alter']['strip_tags'] = 0;
+						$handler->display->display_options['fields'][$value['field_name']]['alter']['trim'] = 0;
+						$handler->display->display_options['fields'][$value['field_name']]['alter']['html'] = 0;
+						$handler->display->display_options['fields'][$value['field_name']]['element_label_colon'] = 0;
+						$handler->display->display_options['fields'][$value['field_name']]['element_default_classes'] = 1;
+						$handler->display->display_options['fields'][$value['field_name']]['hide_empty'] = 0;
+						$handler->display->display_options['fields'][$value['field_name']]['empty_zero'] = 0;
+						$handler->display->display_options['fields'][$value['field_name']]['hide_alter_empty'] = 1;
+						$handler->display->display_options['fields'][$value['field_name']]['field_api_classes'] = 0;
 				}
 				//if field is an image setting for showing image as a thumbnail
-				if($value[widget][type] == "image_image") {
+				if($value['widget']['type'] == "image_image") {
 					/* Field: Commerce Product: Image */
-					$handler->display->display_options['fields'][$value[field_name]]['settings'] = array(
+					$handler->display->display_options['fields'][$value['field_name']]['settings'] = array(
 					  'image_style' => 'thumbnail',
 					  'image_link' => 'content',
 					);
 				}
 				//if field is compare type then set flag to true and save the name of the field to use as a filter
-				if($value[widget][type] == "compare_item_compare_widget") {
+				if($value['widget']['type'] == "compare_item_compare_widget") {
 					$compare_field_present=1;
-					$compare_field_name=$value[field_name];
-	echo "\nCOMPARE FIELD NAME:".$compare_field_name."\n";
+					$compare_field_name=$value['field_name'];
+//	echo "\nCOMPARE FIELD NAME:".$compare_field_name."\n";
 				}
-					  $bundle_name=$value[bundle];
+					  $bundle_name=$value['bundle'];
 			}
 			//if the current bundle/product doesnt have a compare field skip creating the view
 			if($compare_field_present == 0) {
-				echo "\n**no compare field**\n";
+//				echo "\n**no compare field**\n";
 				continue;
 			}
-			echo "\nBUNDLE:$bundle_name\n";
+//			echo "\nBUNDLE:$bundle_name\n";
 			/* Filter criterion: Commerce Product: Type */
 			$handler->display->display_options['filters']['type']['id'] = 'type';
 			$handler->display->display_options['filters']['type']['table'] = 'commerce_product';
@@ -143,7 +143,7 @@ foreach ($instances as $val) {//for getting the array of each bundle/product
 	
 			/* Display: Page */
 		  $handler = $view->new_display('page', 'Page', 'page');
-		  $handler->display->display_options['path'] = 'comparepage'.$count;
+		  $handler->display->display_options['path'] = $bundle_name.'/comparepage';
 		  $handler->display->display_options['menu']['type'] = 'normal';
 		  $handler->display->display_options['menu']['title'] = 'Compare Page '.$bundle_name;
 			$handler->display->display_options['menu']['name'] = 'main-menu';
