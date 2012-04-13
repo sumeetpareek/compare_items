@@ -266,31 +266,35 @@ function compare_item_contents() {
   return '
   <div id="compare_cart">
   
-  <table>
+  <table id="compare-cart-table">
   	<tr>
   		<td name="compare_item" id="compare_item">
-  			<div class="div_image compare-product compare-product-image" name="compare_item" id="compare_item">
-  				<img src="/compare/sites/all/modules/compare_item/images/add_item.jpg" class="image" height="50px" width="50px" /><span class="remove_item"></span>
+  			<div class="div_image compare-product compare-product-image">
+  				<img src="/compare/sites/all/modules/compare_item/images/add_item.jpg" class="image" height="50px" width="50px" />
   			</div>
-  			<span class="compare-product-title compare-product"></span>
+  			<div class="remove_item compare-product-remove"></div>
+  			<div class="compare-product-title compare-product"></div>
  	 		</td>
   		<td name="compare_item" id="compare_item">
-  			<div class="div_image compare-product compare-product-image" name="compare_item" id="compare_item">
-  				<img src="/compare/sites/all/modules/compare_item/images/add_item.jpg" class="image" height="50px" width="50px" /><span class="remove_item"></span>
+  			<div class="div_image compare-product compare-product-image">
+  				<img src="/compare/sites/all/modules/compare_item/images/add_item.jpg" class="image" height="50px" width="50px" />
   			</div>
-  			<span class="compare-product-title compare-product"></span>
+  			<div class="remove_item compare-product-remove"></div>
+  			<div class="compare-product-title compare-product"></div>
   		</td>
   		<td name="compare_item" id="compare_item">
-  			<div class="div_image compare-product compare-product-image" name="compare_item" id="compare_item">
-  				<img src="/compare/sites/all/modules/compare_item/images/add_item.jpg" class="image" height="50px" width="50px" /><span class="remove_item"></span>
+  			<div class="div_image compare-product compare-product-image">
+  				<img src="/compare/sites/all/modules/compare_item/images/add_item.jpg" class="image" height="50px" width="50px" />
   			</div>
-  			<span class="compare-product-title compare-product"></span>
+  			<div class="remove_item compare-product-remove"></div>
+  			<div class="compare-product-title compare-product"></div>
   		</td>
   		<td name="compare_item" id="compare_item">
-  			<div class="div_image compare-product compare-product-image" name="compare_item" id="compare_item">
-  				<img src="/compare/sites/all/modules/compare_item/images/add_item.jpg" class="image" height="50px" width="50px" /><span class="remove_item"></span>
+  			<div class="div_image compare-product compare-product-image">
+  				<img src="/compare/sites/all/modules/compare_item/images/add_item.jpg" class="image" height="50px" width="50px" />
   			</div>
-  			<span class="compare-product-title compare-product"></span>
+  			<div class="remove_item compare-product-remove"></div>
+  			<div class="compare-product-title compare-product"></div>
   		</td>
   	</tr>
   	
@@ -415,7 +419,7 @@ function compare_item_field_formatter_view($entity_type, $entity, $field, $insta
 			$sku = $entity->sku;
 //		echo $sku;
 		$element[] = array(
-			'#markup' => "<input style='display:inline' type='checkbox' id='$sku' class='compare'/>&nbsp;<label style='display:inline'>Add to compare</label>",
+			'#markup' => "<input style='display:inline' type='checkbox' id='$sku' class='compare-checkbox'/>&nbsp;<label style='display:inline'>Add to compare</label>",
 		);
 	}
 //	elseif($entity_type == "node") {

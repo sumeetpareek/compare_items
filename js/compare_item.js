@@ -1,8 +1,8 @@
 (function($)  {
 	function comparefunction(context)  {
 			var checkbox_id;
-			var count = 0;
 			var compare_count = 0;
+			
 //			compare_item_cookie = $.cookie("compare_item_cookie") ? $.cookie("compare_item_cookie").split(',') : new Array();
 			document.getElementById("btn_compare").disabled = true;
 			
@@ -22,14 +22,16 @@
 			
 			if($.cookie("compare_item_cookie") != null) {
 				compare_item_cookie = $.cookie("compare_item_cookie").split(',');
-				alert("Already set cookie is: "+compare_item_cookie);
+				compare_count = parseInt($.cookie("compare_count_cookie"));
+////				alert("Already set cookie is: "+compare_item_cookie);
 				$.each(compare_item_cookie,function(index) {	
-							alert(compare_item_cookie[index]);
-							get_item_image(compare_item_cookie[index]);
+//							alert(compare_item_cookie[index]);
+							$(".compare-checkbox#"+compare_item_cookie[index]).attr('checked', true);
+							get_item_image(compare_item_cookie[index],index+1);
 					}
 				);
 			}
-			
+//			
 			function get_item_image(id,compare_count) {
 				$.ajax({
 					type: "POST",
@@ -37,42 +39,62 @@
 					dataType: 'json',
 					data: "id=" + encodeURI(id),
 					success: function(result){
-				alert("RESULT: "+result["title"]);
-								var title_list = $("#compare_cart .compare-product-title");
-								alert(title_list);
-								var title_list_to_array = jQuery.makeArray(title_list);
-								title_list_to_array[compare_count-1].innerHTML=result["title"];
-								
-//								var image_list = $("#compare_cart .compare-product-image");
-//								alert(image_list);
-//								var image_list_to_array = jQuery.makeArray(image_list);
-//								alert(image_list_to_array);
-								
-								var image_element = document.getElementById(id).getElementsByTagName("img");
-								var span_element = document.getElementById(id).getElementsByTagName("span");
-								image_element[0].setAttribute("src",result["image_url"]);
-								span_element[0].setAttribute("title", "Remove");
-								span_element[0].innerHTML = "<img src='/compare/sites/all/modules/compare_item/images/remove.gif' />";
+//							alert("RESULT: "+result["title"]);
+							var product_title = result["title"];
+							var product_image = result["image_url"];
+//							alert("***"+Drupal.settings.basePath);
+							var remove_item = Drupal.settings.basePath+'sites/all/modules/compare_item/images/remove.gif';
+//							alert("Product title = "+product_title+"\nProduct image url = "+product_image);
+							
+//							compare_count = parseInt($.cookie("compare_count_cookie"));
+//							alert("The cookie count retrieved is = "+compare_count);
+							
+//							$('td#' + id + " span.compare-product-title").html(product_title);
+//							$('td#' + id + " div.compare-product-image img").attr('src', product_image);
+//ADD THE TITLE, IMAGE, REMOVE BUTTON FOR THE ITEM ADDED							
+							$('table#compare-cart-table td:nth-child('+compare_count+') div.compare-product-title').html(product_title);
+							$('table#compare-cart-table td:nth-child('+compare_count+') div.compare-product-image img').attr('src', product_image);
+							$('table#compare-cart-table td:nth-child('+compare_count+') div.compare-product-remove').html('<img src="'+remove_item+'"/>');
+							$('table#compare-cart-table td:nth-child('+compare_count+')').attr("id",id);
+							
+//							var title_list = $("#compare_cart .compare-product-title");
+//							alert(title_list);
+//							var title_list_to_array = jQuery.makeArray(title_list);
+//							title_list_to_array[compare_compare_count-1].innerHTML=result["title"];
+//							
+////								var image_list = $("#compare_cart .compare-product-image");
+////								alert(image_list);
+////								var image_list_to_array = jQuery.makeArray(image_list);
+////								alert(image_list_to_array);
+//							
+//							var image_element = document.getElementById(id).getElementsByTagName("img");
+//							var span_element = document.getElementById(id).getElementsByTagName("span");
+//							image_element[0].setAttribute("src",result["image_url"]);
+//							span_element[0].setAttribute("title", "Remove");
+//							span_element[0].innerHTML = "<img src='/compare/sites/all/modules/compare_item/images/remove.gif' />";
 					}
 				});
 			}
 			
 //WHEN THE ADD TO COMPARE OF A ITEM IS CHECKED THIS FUNCTION EXECUTES			
-			$(".compare").live("click", function(){
+			$(".compare-checkbox").live("click", function(){
 				var checkbox_id = $(this).attr("id");
-				$(this).attr("disabled", true);
-				
-				var item = document.getElementById("compare_item");
-				item.id = checkbox_id;
-				count++;
+//				$(this).attr("disabled", true);
+//					alert("checkbox_id = "+checkbox_id);
+//				var item = document.getElementById("compare_item");
+//				item.id = checkbox_id;
 				compare_count++;
-				
+//					alert("compare_count = "+compare_count); 
 //Adding the current id to the cookie
 						compare_item_cookie = $.cookie("compare_item_cookie") ? $.cookie("compare_item_cookie").split(',') : new Array();
-						var flag=1;
+						//THIS OPERATION IS NOT REQUIRED
+						//BECAUSE IF COOKIE IS ALREADY SET THEN THE CHECKBOX WILL BE CHECKED FOR THE ITEM
+						//SO CHECKING BECOMED UNNECCESARY
+						//KEEPING THIS FOR NOW BECAUSE ABOVE OPERATION HAS NOT BEEN IMPLEMENTED
+						var flag=1;//to check if the cookie for this item is already set
 //						alert("Empty"+compare_item_cookie+" "+checkbox_id);
 						$.each(compare_item_cookie,function(index) {
-		//							alert(compare_item_cookie[index]);
+//									alert(compare_item_cookie[index]);
 									if (compare_item_cookie[index] == checkbox_id) {
 										flag = 0;
 										return false;
@@ -90,14 +112,33 @@
 //					$.cookie("item-id"+compare_count,checkbox_id);
 //					alert("A cookie is now set"+$.cookie("item-id"+compare_count));
 //				}
-				
-				if (count == 4)	{
-					$(":checkbox").attr("disabled", true);
+
+//if 4 items are added make all the other checkboxes disabled						
+				if (compare_count == 4)	{
+					$(".compare-checkbox").attr("disabled", true);
 				}
+//if more than 1 item has been added to compare cart make compare button enabled				
 				btn_compare_check_enabled();
 				
+				
+				if($.cookie("compare_count_cookie") != null){
+					compare_count = parseInt($.cookie("compare_count_cookie"));
+//					alert("The count was = "+compare_count);
+					compare_count++;
+//					alert("The count has been incremented to = "+compare_count);
+					$.cookie("compare_count_cookie",compare_count);
+//					alert("The cookie is now = "+$.cookie("compare_count_cookie"));
+				}
+				else {
+					$.cookie("compare_count_cookie","1");
+//					alert("The count cookie is now set to = "+$.cookie("compare_count_cookie"));
+				}
 
+//get the added items image and title using ajax
+				compare_count = parseInt($.cookie("compare_count_cookie"));
 				get_item_image(checkbox_id,compare_count);
+//				
+				
 //				$.ajax({
 //						type: "GET",
 //						url: Drupal.settings.basePath + '/compare_item_get_image',
@@ -170,8 +211,8 @@
 					$("input#"+id).attr("disabled", false);
 					$("input#"+id).attr("checked", false);
 					
-					count--;
 					compare_count--;
+					compare_compare_count--;
 					
 					btn_compare_check_enabled();
 					$(":checkbox").each(function(){
@@ -184,8 +225,8 @@
 			
 			
 			function reset_compare_list(){
-				count = 0;
 				compare_count = 0;
+				compare_compare_count = 0;
 				
 //Removing the cookie
 					$.cookie("compare_item_cookie",null);
