@@ -9,6 +9,12 @@ function compare_item_init() {
 	  drupal_add_js(drupal_get_path('module', 'compare_item').'/js/compare_item.js');
 	  // Adds a css file to the module.
 	  drupal_add_css(drupal_get_path('module', 'compare_item') . '/css/compare_item.css');
+	  
+//	  $product = commerce_product_load_by_sku('LAPTOP02');
+//	  dsm($product);
+//	  dsm($product->title);
+//	  echo "df";
+// 	  dsm($product->field_product_image[und][0][uri]);
 	}
 }
 
@@ -142,41 +148,74 @@ function compare_item_views_api($module, $api) {
 /**
  * 
  * Writes the image uri
- */
+ */	
 function compare_item_get_image()  {
-	$image_id = (int)$_GET['id'];
+	$product_sku = $_POST['id'];
+	
+		$product = commerce_product_load_by_sku($product_sku);
+	  $title = $product->title;
+	
+	  $uri = $product->field_product_image[und][0][uri];
+	  
+//		if ($uri['uri']==null) {
+// 		 	$image_url=url('sites/default/files/default_images'.$uri['filename'], array('absolute'=>true));	
+//  	}
+//  	else {
+	  $image_url = url('sites/default/files/'.file_uri_target($uri), array('absolute'=>true));
+//  }
+		
+	  $product = array(
+	  	"title" => $title,
+	  	"image_url" => $image_url
+	  );
+	  
+	  drupal_json_output($product);	  
+	  
+	  
+					//	dsm($_POST['id']);
+					//	$select_title_query = db_select('commerce_product', 'cp')
+					//		->fields('cp', array('title'))
+					//		->condition('cp.sku',$select_title_query,'=')
+					//		->execute();
+					//		
+					//	$product_title = $select_title_query->fetchAssoc();
+					//	echo $product_title;
+					//	drupal_json_output($product_title);
+	
+	
 //	echo $image_id;
-  $select_fid_query = db_select('file_usage', 'fu')
-            ->fields('fu')
-            ->where('fu.id = :id', array(':id' => $image_id))
-//            ->condition('fu.id', ':id', '=', array(':id' => $image_id))
-            ->execute();
-//            ->fetchAssoc();
-  
-  $fid = $select_fid_query->fetchAssoc();
-        
-  $select_image_query = db_select('file_managed', 'fm')
-            ->fields('fm')
-            ->where('fm.fid = :fid', array(':fid' => $fid['fid']))
-//            ->condition('fm.fid', ':fid', '=', array(':fid' => $fid['fid']))
-            ->execute();
-//            ->fetchAssoc();
-  
-  $uri = $select_image_query->fetchAssoc();
-//  dsm($select_fid_query);
-//  dsm($select_image_query);
-//        dsm($uri);
-//  drupal_json_output($image_id . " " . $select_fid_query->rowCount() . " " . $select_image_query->rowCount() . " " . $uri['uri']);
+//						  $select_fid_query = db_select('file_usage', 'fu')
+//						            ->fields('fu')
+//						            ->where('fu.id = :id', array(':id' => $image_id))
+//						//            ->condition('fu.id', ':id', '=', array(':id' => $image_id))
+//						            ->execute();
+//						//            ->fetchAssoc();
+//						  
+//						  $fid = $select_fid_query->fetchAssoc();
+//						        
+//						  $select_image_query = db_select('file_managed', 'fm')
+//						            ->fields('fm')
+//						            ->where('fm.fid = :fid', array(':fid' => $fid['fid']))
+//						//            ->condition('fm.fid', ':fid', '=', array(':fid' => $fid['fid']))
+//						            ->execute();
+//						//            ->fetchAssoc();
+//						  
+//						  $uri = $select_image_query->fetchAssoc();
+//						//  dsm($select_fid_query);
+//						//  dsm($select_image_query);
+//						//        dsm($uri);
+//						//  drupal_json_output($image_id . " " . $select_fid_query->rowCount() . " " . $select_image_query->rowCount() . " " . $uri['uri']);
+//						
+//						//  drupal_json_output($uri['filename']);
+//						
+//						//  if ($uri['uri']==null) {
+//						//  	$image_url=url('sites/default/files/default_images'.$uri['filename'], array('absolute'=>true));	
+//						//  }
+//						//  else {
+//						  $image_url=url('sites/default/files/'.file_uri_target($uri['uri']), array('absolute'=>true));
+//						//  }
+//						  drupal_json_output($image_url);
 
-//  drupal_json_output($uri['filename']);
-
-//  if ($uri['uri']==null) {
-//  	$image_url=url('sites/default/files/default_images'.$uri['filename'], array('absolute'=>true));	
-//  }
-//  else {
-  $image_url=url('sites/default/files/'.file_uri_target($uri['uri']), array('absolute'=>true));
-//  }
-  drupal_json_output($image_url);
 //	$result = db_query('SELECT nid FROM node WHERE nid = :nid', array(':nid' => 1));
 //  foreach ($result as $id) {
 //  	
@@ -226,23 +265,44 @@ function compare_item_block_view($delta='') {
 function compare_item_contents() {
   return '
   <div id="compare_cart">
-  <div id="compare_block" class="div_image">
-    <div class="div_image" name="compare_item" id="compare_item">
-      <img src="/compare/sites/all/modules/compare_item/images/add_item.jpg" class="image" height="50px" width="50px" /><span class="remove_item"></span>
-    </div>
-    <div class="div_image" name="compare_item" id="compare_item">
-      <img src="/compare/sites/all/modules/compare_item/images/add_item.jpg" class="image" height="50px" width="50px" /><span class="remove_item"></span>
-    </div>
-    <div class="div_image" name="compare_item" id="compare_item">
-      <img src="/compare/sites/all/modules/compare_item/images/add_item.jpg" class="image" height="50px" width="50px" /><span class="remove_item"></span>
-    </div>
-    <div class="div_image" name="compare_item" id="compare_item">
-      <img src="/compare/sites/all/modules/compare_item/images/add_item.jpg" class="image" height="50px" width="50px" /><span class="remove_item"></span>
-    </div>
-  </div>
-  <div id="compare_cart_options" class="div_image">
-    <a id="aclose" class="compare_cart_options_css">Close</a><label class="compare_cart_options_css">|</label><a id="aclearlist" class="compare_cart_options_css">Clear list</a><button id="btn_compare" class="compare_cart_options_css">Compare</button>
-  </div>
+  
+  <table>
+  	<tr>
+  		<td name="compare_item" id="compare_item">
+  			<div class="div_image compare-product compare-product-image" name="compare_item" id="compare_item">
+  				<img src="/compare/sites/all/modules/compare_item/images/add_item.jpg" class="image" height="50px" width="50px" /><span class="remove_item"></span>
+  			</div>
+  			<span class="compare-product-title compare-product"></span>
+ 	 		</td>
+  		<td name="compare_item" id="compare_item">
+  			<div class="div_image compare-product compare-product-image" name="compare_item" id="compare_item">
+  				<img src="/compare/sites/all/modules/compare_item/images/add_item.jpg" class="image" height="50px" width="50px" /><span class="remove_item"></span>
+  			</div>
+  			<span class="compare-product-title compare-product"></span>
+  		</td>
+  		<td name="compare_item" id="compare_item">
+  			<div class="div_image compare-product compare-product-image" name="compare_item" id="compare_item">
+  				<img src="/compare/sites/all/modules/compare_item/images/add_item.jpg" class="image" height="50px" width="50px" /><span class="remove_item"></span>
+  			</div>
+  			<span class="compare-product-title compare-product"></span>
+  		</td>
+  		<td name="compare_item" id="compare_item">
+  			<div class="div_image compare-product compare-product-image" name="compare_item" id="compare_item">
+  				<img src="/compare/sites/all/modules/compare_item/images/add_item.jpg" class="image" height="50px" width="50px" /><span class="remove_item"></span>
+  			</div>
+  			<span class="compare-product-title compare-product"></span>
+  		</td>
+  	</tr>
+  	
+  	<tr>
+  		<td colspan="4">
+	  		<div id="compare_cart_options" class="div_image">
+		  		<a id="aclose" class="compare_cart_options_css">Close</a><label class="compare_cart_options_css">|</label><a id="aclearlist" class="compare_cart_options_css">Clear list</a><button id="btn_compare" class="compare_cart_options_css">Compare</button>
+				</div>
+			</td>
+	  </tr>
+  </table>
+  
 </div>
 '
   ;
