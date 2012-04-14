@@ -301,7 +301,10 @@ function compare_item_contents() {
   	<tr>
   		<td colspan="4">
 	  		<div id="compare_cart_options" class="div_image">
-		  		<a id="aclose" class="compare_cart_options_css">Close</a><label class="compare_cart_options_css">|</label><a id="aclearlist" class="compare_cart_options_css">Clear list</a><button id="btn_compare" class="compare_cart_options_css">Compare</button>
+		  		<a id="aclose" class="compare_cart_options_css compare_cart_close">Close</a>
+		  		<label class="compare_cart_options_css">|</label>
+		  		<a id="aclearlist" class="compare_cart_options_css compare_cart_clear">Clear list</a>
+		  		<button id="btn_compare" class="compare_cart_options_css compare_cart_compare_button">Compare</button>
 				</div>
 			</td>
 	  </tr>
@@ -419,7 +422,7 @@ function compare_item_field_formatter_view($entity_type, $entity, $field, $insta
 			$sku = $entity->sku;
 //		echo $sku;
 		$element[] = array(
-			'#markup' => "<input style='display:inline' type='checkbox' id='$sku' class='compare-checkbox'/>&nbsp;<label style='display:inline'>Add to compare</label>",
+			'#markup' => "<input style='display:inline' type='checkbox' id='$sku' class='compare-checkbox $entity->type'/>&nbsp;<label style='display:inline'>Add to compare</label>",
 		);
 	}
 //	elseif($entity_type == "node") {
