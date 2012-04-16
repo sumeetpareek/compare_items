@@ -25,6 +25,7 @@
 			if($.cookie("compare_item_cookie") != null) {
 				compare_item_cookie = $.cookie("compare_item_cookie").split(',');
 				compare_count = parseInt($.cookie("compare_count_cookie"));
+				btn_compare_check_enabled();
 ////				alert("Already set cookie is: "+compare_item_cookie);
 				$.each(compare_item_cookie,function(index) {	
 //							alert(compare_item_cookie[index]);
@@ -57,7 +58,7 @@
 							$('table#compare-cart-table td:nth-child('+compare_count+') div.compare-product-title').html(product_title);
 							$('table#compare-cart-table td:nth-child('+compare_count+') div.compare-product-image img').attr('src', product_image);
 							$('table#compare-cart-table td:nth-child('+compare_count+') div.compare-product-remove').html('<img src="'+remove_item+'"/>');
-							$('table#compare-cart-table td:nth-child('+compare_count+')').attr("id",id);
+							$('table#compare-cart-table tr:first-child td:nth-child('+compare_count+')').attr("id",id);
 							
 //							var title_list = $("#compare_cart .compare-product-title");
 //							alert(title_list);
@@ -79,8 +80,8 @@
 			}
 			
 			
-			function remove_compare_cart_item(id){					
-				$('table#compare-cart-table td#'+id).remove();
+			function remove_compare_cart_item(id){
+				$('table#compare-cart-table tr:first-child td#'+id).remove();
 				$('table#compare-cart-table tr:first-child td:nth-child(3)').after(
 					"<td name='compare_item' id='compare_item'>" +
 					"	<div class='div_image compare-product compare-product-image'>" +
@@ -142,7 +143,7 @@
 						compare_product_type = product_type;
 					}
 	//				alert("The compare product type is: "+product_type);
-	//				alert("The compare product type cookie is: "+$.cookie("compare_product_type"));
+//					alert("The compare product type cookie is: "+$.cookie("compare_product_type"));
 					
 					if(compare_product_type != product_type){
 						alert("The cart contains product of a different type. Please clear the cart before adding this item");
@@ -177,7 +178,7 @@
 	//							alert("New cookie item set"+compare_item_cookie+" "+checkbox_id+" the index value for 0"+compare_item_cookie[0]);
 							}
 							$.cookie("compare_item_cookie", compare_item_cookie.join(','));
-	//						alert($.cookie("compare_item_cookie"));
+//							alert("The compare_item_cookie is = "+$.cookie("compare_item_cookie"));
 					
 	//				if($.cookie("item-id"+compare_count) == null) {
 	//					$.cookie("item-id"+compare_count,checkbox_id);
@@ -204,7 +205,7 @@
 						$.cookie("compare_count_cookie","1");
 	//					alert("The count cookie is now set to = "+$.cookie("compare_count_cookie"));
 					}
-	
+//					alert("The count cookie is = "+$.cookie("compare_count_cookie"));
 	//get the added items image and title using ajax
 					compare_count = parseInt($.cookie("compare_count_cookie"));
 					get_item_image(checkbox_id,compare_count);
@@ -236,7 +237,7 @@
 					});	
 				}
 				else {
-					alert("this item will be removed......please please please !");
+//					alert("this item will be removed......please please please !");
 					remove_compare_cart_item(checkbox_id);
 				}
 			});
@@ -246,8 +247,10 @@
 //				$(this).hide("fast", function(){
 					var id = $(this).parent().attr("id");
 //					alert(id);
-					
 					remove_compare_cart_item(id);
+
+					$(".compare-checkbox#"+id).attr('checked', false);
+//					alert($(".compare-checkbox#"+id).attr("id"));
 					
 										
 //					$('table#compare-cart-table td#'+id).remove();
@@ -350,6 +353,8 @@
 				$.cookie("compare_count_cookie",null);
 				$.cookie("compare_product_type",null);
 				
+				$(".compare-checkbox").attr('checked', false);
+				
 				$("table#compare-cart-table tr:first-child td").each(function(index){
 					$(this).attr("id", "compare_item");
 					$(this).html(
@@ -388,16 +393,23 @@
 			}
 			
 			$("#btn_compare").click(function() {
-				var link_compare_page="http://localhost/compare/viewtest2";
-				$("[name='compare_item']").each(function(index){
-//					alert("sdsd");
-//					alert($(this).attr("id"));
-					if($(this).attr("id") != "compare_item"){
-//						alert($(this).attr("id"));
-						link_compare_page += "\\"+$(this).attr("id");
-					}
-				});
-//				alert(link_compare_page);
+				var product_type = $.cookie("compare_product_type");
+//				alert("The product is = "+$.cookie("compare_product_type"));
+				var link_compare_page = "http://localhost/compare/"+product_type+"/comparepage/";
+//				alert($.cookie("compare_item_cookie"));
+				var compare_product_sku_list = $.cookie("compare_item_cookie");
+//				alert(compare_product_sku_list);
+				link_compare_page += compare_product_sku_list;
+				alert(link_compare_page);
+//				$("[name='compare_item']").each(function(index){
+////					alert("sdsd");
+////					alert($(this).attr("id"));
+//					if($(this).attr("id") != "compare_item"){
+////						alert($(this).attr("id"));
+//						link_compare_page += "\\"+$(this).attr("id");
+//					}
+//				});
+////				alert(link_compare_page);
 				window.location=link_compare_page;
 			});
 			

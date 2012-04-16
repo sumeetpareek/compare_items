@@ -42,8 +42,10 @@ foreach ($instances as $val) {//for getting the array of each bundle/product
 			$handler->display->display_options['exposed_form']['type'] = 'basic';
 			$handler->display->display_options['pager']['type'] = 'full';
 			$handler->display->display_options['pager']['options']['items_per_page'] = '10';
-			$handler->display->display_options['style_plugin'] = 'list';
-
+//			$handler->display->display_options['style_plugin'] = 'list';
+			$handler->display->display_options['style_plugin'] = 'table';
+			
+			
 			$handler->display->display_options['style_options']['override'] = 1;
 			$handler->display->display_options['style_options']['sticky'] = 0;
 			$handler->display->display_options['style_options']['empty_table'] = 0;
@@ -84,7 +86,7 @@ foreach ($instances as $val) {//for getting the array of each bundle/product
 		   		  $handler->display->display_options['fields'][$value['field_name']]['id'] = $value['field_name'];
 				  	$handler->display->display_options['fields'][$value['field_name']]['table'] = 'field_data_'.$value['field_name'];
 						$handler->display->display_options['fields'][$value['field_name']]['field'] = $value['field_name'];
-					//	$handler->display->display_options['fields']['field_pd_color']['label'] = '';
+//					$handler->display->display_options['fields'][$value['field_name']]['label'] = '';
 						$handler->display->display_options['fields'][$value['field_name']]['alter']['alter_text'] = 0;
 						$handler->display->display_options['fields'][$value['field_name']]['alter']['make_link'] = 0;
 						$handler->display->display_options['fields'][$value['field_name']]['alter']['absolute'] = 0;
@@ -120,6 +122,7 @@ foreach ($instances as $val) {//for getting the array of each bundle/product
 //	echo "\nCOMPARE FIELD NAME:".$compare_field_name."\n";
 				}
 					  $bundle_name=$value['bundle'];
+					  $handler->display->display_options['css_class'] = $bundle_name;
 			}
 			//if the current bundle/product doesnt have a compare field skip creating the view
 			if($compare_field_present == 0) {
@@ -141,6 +144,22 @@ foreach ($instances as $val) {//for getting the array of each bundle/product
 			$handler->display->display_options['filters'][$column_name]['field'] = $column_name;
 			$handler->display->display_options['filters'][$column_name]['operator'] = 'not empty';
 	
+			/* Contextual filter: Commerce Product: SKU */
+			$handler->display->display_options['arguments']['sku']['id'] = 'sku';
+			$handler->display->display_options['arguments']['sku']['table'] = 'commerce_product';
+			$handler->display->display_options['arguments']['sku']['field'] = 'sku';
+			$handler->display->display_options['arguments']['sku']['default_action'] = 'default';
+			$handler->display->display_options['arguments']['sku']['default_argument_type'] = 'raw';
+			$handler->display->display_options['arguments']['sku']['default_argument_options']['index'] = '2';
+			$handler->display->display_options['arguments']['sku']['default_argument_skip_url'] = 1;
+			$handler->display->display_options['arguments']['sku']['summary']['number_of_records'] = '0';
+			$handler->display->display_options['arguments']['sku']['summary']['format'] = 'default_summary';
+			$handler->display->display_options['arguments']['sku']['summary_options']['items_per_page'] = '25';
+			$handler->display->display_options['arguments']['sku']['glossary'] = 0;
+			$handler->display->display_options['arguments']['sku']['limit'] = '0';
+			$handler->display->display_options['arguments']['sku']['transform_dash'] = 0;
+			$handler->display->display_options['arguments']['sku']['break_phrase'] = 1;
+			
 			/* Display: Page */
 		  $handler = $view->new_display('page', 'Page', 'page');
 		  $handler->display->display_options['path'] = $bundle_name.'/comparepage';
@@ -151,7 +170,6 @@ foreach ($instances as $val) {//for getting the array of each bundle/product
 			//adds a new view to the views array
 			$views[$view->name] = $view;
 		}
-
   return $views;
 }
 
