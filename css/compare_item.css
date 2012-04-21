@@ -55,16 +55,20 @@
 .compare-product{
 	
 }
-#compare_cart tr td {
-	width:25%;
+#compare_cart #compare-cart-table tbody {
+	border: none;
+}
+#compare_cart #compare-cart-table tr td {
+	width: 25%;
+	border: none;
 }
 
 .compare-product-title{
 	color:white;
 }
-.compare-product-image img{
+/*.compare-product-image img{
 	margin-top:5px;
-}
+}*/
 
 #compare_cart_options {
 	text-align: right;

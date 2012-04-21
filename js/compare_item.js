@@ -36,15 +36,20 @@
 			}
 //			
 			function get_item_image(id,compare_count) {
+//				alert("id= "+id+"\ncompare_count= "+compare_count);
 				$.ajax({
 					type: "POST",
 					url: Drupal.settings.basePath + '/compare_item_get_image',
 					dataType: 'json',
 					data: "id=" + encodeURI(id),
+					error: function(jqXHR, textStatus, errorThrown){
+						alert("THE ERROR IS: "+errorThrown);
+					},
 					success: function(result){
+//					alert("Result= "+result);
 //							alert("RESULT: "+result["title"]);
 							var product_title = result["title"];
-							var product_image = result["image_url"];
+//							var product_image = result["image_url"];
 //							alert("***"+Drupal.settings.basePath);
 							var remove_item = Drupal.settings.basePath+'sites/all/modules/compare_item/images/remove.gif';
 //							alert("Product title = "+product_title+"\nProduct image url = "+product_image);
@@ -56,7 +61,7 @@
 //							$('td#' + id + " div.compare-product-image img").attr('src', product_image);
 //ADD THE TITLE, IMAGE, REMOVE BUTTON FOR THE ITEM ADDED							
 							$('table#compare-cart-table td:nth-child('+compare_count+') div.compare-product-title').html(product_title);
-							$('table#compare-cart-table td:nth-child('+compare_count+') div.compare-product-image img').attr('src', product_image);
+//							$('table#compare-cart-table td:nth-child('+compare_count+') div.compare-product-image img').attr('src', product_image);
 							$('table#compare-cart-table td:nth-child('+compare_count+') div.compare-product-remove').html('<img src="'+remove_item+'"/>');
 							$('table#compare-cart-table tr:first-child td:nth-child('+compare_count+')').attr("id",id);
 							
@@ -84,9 +89,9 @@
 				$('table#compare-cart-table tr:first-child td#'+id).remove();
 				$('table#compare-cart-table tr:first-child td:nth-child(3)').after(
 					"<td name='compare_item' id='compare_item'>" +
-					"	<div class='div_image compare-product compare-product-image'>" +
-					"		<img src='/compare/sites/all/modules/compare_item/images/add_item.jpg' class='image' height='50px' width='50px' />" +
-					"	</div>" +
+//					"	<div class='div_image compare-product compare-product-image'>" +
+//					"		<img src='/compare/sites/all/modules/compare_item/images/add_item.jpg' class='image' height='50px' width='50px' />" +
+//					"	</div>" +
 					"	<div class='remove_item compare-product-remove'></div>" +
 					"	<div class='compare-product-title compare-product'></div>" +
 					"</td>"
@@ -133,7 +138,7 @@
 				var checkbox_id = $(this).attr("id");
 				var checkbox_class = $(this).attr("class").split(" ");
 				product_type = checkbox_class[1];
-				
+//			alert("checkbox_id= "+checkbox_id+"\ncheckbox_class= "+checkbox_class+"\nproduct_type "+product_type);	
 				if($(this).is(':checked')) {				
 					if($.cookie("compare_product_type") != null){
 						compare_product_type = $.cookie("compare_product_type");
@@ -142,7 +147,7 @@
 						$.cookie("compare_product_type",product_type);
 						compare_product_type = product_type;
 					}
-	//				alert("The compare product type is: "+product_type);
+//					alert("The compare product type is: "+product_type);
 //					alert("The compare product type cookie is: "+$.cookie("compare_product_type"));
 					
 					if(compare_product_type != product_type){
@@ -156,7 +161,7 @@
 	//				var item = document.getElementById("compare_item");
 	//				item.id = checkbox_id;
 					compare_count++;
-	//					alert("compare_count = "+compare_count); 
+//						alert("compare_count = "+compare_count); 
 	//Adding the current id to the cookie
 							compare_item_cookie = $.cookie("compare_item_cookie") ? $.cookie("compare_item_cookie").split(',') : new Array();
 							//THIS OPERATION IS NOT REQUIRED
@@ -208,6 +213,7 @@
 //					alert("The count cookie is = "+$.cookie("compare_count_cookie"));
 	//get the added items image and title using ajax
 					compare_count = parseInt($.cookie("compare_count_cookie"));
+//					alert("compare_count="+compare_count);
 					get_item_image(checkbox_id,compare_count);
 	//				
 					
@@ -358,9 +364,9 @@
 				$("table#compare-cart-table tr:first-child td").each(function(index){
 					$(this).attr("id", "compare_item");
 					$(this).html(
-						"<div class='div_image compare-product compare-product-image'>" +
-						"	<img src='/compare/sites/all/modules/compare_item/images/add_item.jpg' class='image' height='50px' width='50px' />" +
-						"</div>" +
+//						"<div class='div_image compare-product compare-product-image'>" +
+//						"	<img src='/compare/sites/all/modules/compare_item/images/add_item.jpg' class='image' height='50px' width='50px' />" +
+//						"</div>" +
 						"<div class='remove_item compare-product-remove'></div>" +
 						"<div class='compare-product-title compare-product'></div>"
 					);

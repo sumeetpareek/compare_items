@@ -9,7 +9,8 @@ function compare_item_init() {
 	  drupal_add_js(drupal_get_path('module', 'compare_item').'/js/compare_item.js');
 	  // Adds a css file to the module.
 	  drupal_add_css(drupal_get_path('module', 'compare_item') . '/css/compare_item.css');
-	  
+//	  global $base_path;
+//	  print $base_path;
 //	  $product = commerce_product_load_by_sku('LAPTOP02');
 //	  dsm($product);
 //	  dsm($product->title);
@@ -152,21 +153,21 @@ function compare_item_views_api($module, $api) {
 function compare_item_get_image()  {
 	$product_sku = $_POST['id'];
 	
-		$product = commerce_product_load_by_sku($product_sku);
-	  $title = $product->title;
-	
-	  $uri = $product->field_product_image[und][0][uri];
+		$get_product = commerce_product_load_by_sku($product_sku);
+	  $title = $get_product->title;
 	  
-//		if ($uri['uri']==null) {
-// 		 	$image_url=url('sites/default/files/default_images'.$uri['filename'], array('absolute'=>true));	
+//	  $uri = $get_product->field_product_image[und][0][uri];
+//	  
+//		if ($uri==null) {
+// 		 	$image_url=url('sites/all/modules/compare_item/images/product_default.gif', array('absolute'=>true));	
 //  	}
 //  	else {
-	  $image_url = url('sites/default/files/'.file_uri_target($uri), array('absolute'=>true));
+//		  $image_url = url('sites/default/files/'.file_uri_target($uri), array('absolute'=>true));
 //  }
 		
 	  $product = array(
-	  	"title" => $title,
-	  	"image_url" => $image_url
+	  	"title" => $title
+//	  	"image_url" => $image_url
 	  );
 	  
 	  drupal_json_output($product);	  
@@ -228,15 +229,29 @@ function compare_item_get_image()  {
 //function compare_block()  {
 //	$form['']
 //
-
+/**
+ * Implements hook_theme().
+ */
+function compare_item_theme() {
+	return array(
+    'compare_cart' => array(
+      'render element' => 'image_paths',
+      'template' => 'compare-cart',
+    ),	
+	);
+}
+function template_preprocess_compare_cart(&$variables) {
+	global $base_path;
+	$variables['image_paths'] = $base_path;
+}
 /**
  * Implements hook_block_info().
  */
 function compare_item_block_info() {
-  $blocks['compare-item-list'] = array(
-    'info' => t('Compare List'),
+  $blocks['compare-cart'] = array(
+    'info' => t('Compare Cart'),
   	'region' => 'highlighted',
-  	'status' => 1,
+  	'status' => TRUE,
   );
   return $blocks;
 }
@@ -247,10 +262,10 @@ function compare_item_block_info() {
 function compare_item_block_view($delta='') {
   $block = array();
   switch ($delta) {
-    case 'compare-item-list':
+    case 'compare-cart':
 //		drupal_add_js(drupal_get_path('module', 'compare_item').'/js/compare_item.js');
       $block['subject'] = t('Compare List');
-      $block['content'] = compare_item_contents();
+      $block['content'] = theme('compare_cart');
       break;
   }
 //  drupal_add_js(drupal_get_path('module', 'compare_item').'/js/load-selected-images.js');
@@ -258,62 +273,17 @@ function compare_item_block_view($delta='') {
   return $block;
 }
  
-/**
- * Custom html block
- * @return string
- */
-function compare_item_contents() {
-  return '
-  <div id="compare_cart">
-  
-  <table id="compare-cart-table">
-  	<tr>
-  		<td name="compare_item" id="compare_item">
-  			<div class="div_image compare-product compare-product-image">
-  				<img src="/compare/sites/all/modules/compare_item/images/add_item.jpg" class="image" height="50px" width="50px" />
-  			</div>
-  			<div class="remove_item compare-product-remove"></div>
-  			<div class="compare-product-title compare-product"></div>
- 	 		</td>
-  		<td name="compare_item" id="compare_item">
-  			<div class="div_image compare-product compare-product-image">
-  				<img src="/compare/sites/all/modules/compare_item/images/add_item.jpg" class="image" height="50px" width="50px" />
-  			</div>
-  			<div class="remove_item compare-product-remove"></div>
-  			<div class="compare-product-title compare-product"></div>
-  		</td>
-  		<td name="compare_item" id="compare_item">
-  			<div class="div_image compare-product compare-product-image">
-  				<img src="/compare/sites/all/modules/compare_item/images/add_item.jpg" class="image" height="50px" width="50px" />
-  			</div>
-  			<div class="remove_item compare-product-remove"></div>
-  			<div class="compare-product-title compare-product"></div>
-  		</td>
-  		<td name="compare_item" id="compare_item">
-  			<div class="div_image compare-product compare-product-image">
-  				<img src="/compare/sites/all/modules/compare_item/images/add_item.jpg" class="image" height="50px" width="50px" />
-  			</div>
-  			<div class="remove_item compare-product-remove"></div>
-  			<div class="compare-product-title compare-product"></div>
-  		</td>
-  	</tr>
-  	
-  	<tr>
-  		<td colspan="4">
-	  		<div id="compare_cart_options" class="div_image">
-		  		<a id="aclose" class="compare_cart_options_css compare_cart_close">Close</a>
-		  		<label class="compare_cart_options_css">|</label>
-		  		<a id="aclearlist" class="compare_cart_options_css compare_cart_clear">Clear list</a>
-		  		<button id="btn_compare" class="compare_cart_options_css compare_cart_compare_button">Compare</button>
-				</div>
-			</td>
-	  </tr>
-  </table>
-  
-</div>
-'
-  ;
-}
+//						/**
+//						 * Custom html block
+//						 * @return string
+//						 */
+//						function compare_item_contents() {
+//						  $compare_cart = theme('compare_cart');
+//						
+//						  return $compare_cart;
+//						}
+
+
 
 /*Creating new field type to display the Add to compare checkbox; 
 */
