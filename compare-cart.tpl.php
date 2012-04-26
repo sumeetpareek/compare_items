@@ -11,7 +11,7 @@
 <div id="compare_cart">
   <?php //echo($image_paths); ?>
   <table id="compare-cart-table">
-  	<tr>
+  	<tr class="compare-cart-items-to-compare">
   		<td name="compare_item" id="compare_item">
 <!--  			<div class="div_image compare-product compare-product-image">-->
 <!--  				<img src="<?php //echo($image_paths); ?>sites/all/modules/compare_item/images/add_item.jpg" class="image" height="50px" width="50px" />-->

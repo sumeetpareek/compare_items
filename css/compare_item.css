@@ -1,6 +1,6 @@
 @CHARSET "UTF-8";
 
-#compare_cart {
+#block-compare-item-compare-cart {
 /*  display: none;*/
   background-color: gray;
   z-index: 2;
@@ -58,9 +58,12 @@
 #compare_cart #compare-cart-table tbody {
 	border: none;
 }
+#compare_cart #compare-cart-table tr{
+	background-color: gray;
+}
 #compare_cart #compare-cart-table tr td {
 	width: 25%;
-	border: none;
+	border: 10px solid gray;
 }
 
 .compare-product-title{

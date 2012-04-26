@@ -264,7 +264,7 @@ function compare_item_block_view($delta='') {
   switch ($delta) {
     case 'compare-cart':
 //		drupal_add_js(drupal_get_path('module', 'compare_item').'/js/compare_item.js');
-      $block['subject'] = t('Compare List');
+      $block['subject'] = NULL;
       $block['content'] = theme('compare_cart');
       break;
   }

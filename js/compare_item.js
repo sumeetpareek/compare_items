@@ -4,9 +4,13 @@
 			var compare_count = 0;
 			var product_type = null;
 			
+//			var datathis = JSON.parse($.cookie("compare_item_cookie_single"));
+//			alert("sku= "+datathis.sku+"\ncount= "+datathis.count+"\nproduct= "+datathis.product);
+			
+			
 //			compare_item_cookie = $.cookie("compare_item_cookie") ? $.cookie("compare_item_cookie").split(',') : new Array();
 			document.getElementById("btn_compare").disabled = true;
-			
+			$("#compare_cart").hide();
 //			var product_class_list = $(".content .view-display-id-page").attr("class");
 //			var product_class_list_array = product_class_list.split(" ");
 //			var checkbox_id;
@@ -22,21 +26,58 @@
 //			$("."+product_class_list_array[4]+" .views-field-title").attr("id",checkbox_id);
 			
 			
-			if($.cookie("compare_item_cookie") != null) {
-				compare_item_cookie = $.cookie("compare_item_cookie").split(',');
-				compare_count = parseInt($.cookie("compare_count_cookie"));
+			
+			
+			if($.cookie("compare_item_cookie_single") != null) {
+				update_cart_on_refresh();
+//				compare_item_cookie_single = JSON.parse($.cookie("compare_item_cookie_single"));
+//				product_sku = compare_item_cookie_single.sku;
+//				count = compare_item_cookie_single.count;
+//				compare_product_type = compare_item_cookie_single.product;
+//				
+//				compare_count = parseInt(count);
+//				
+//				product_sku_list = product_sku.split(',');
+//				
+//				btn_compare_check_enabled();
+////				alert("Already set cookie is: "+product_sku_list);
+//				$.each(product_sku_list,function(index) {	
+//							alert(product_sku_list[index]);
+//							$(".compare-checkbox#"+product_sku_list[index]).attr('checked', true);
+//							get_item_image(product_sku_list[index],index+1,compare_product_type);
+//					}
+//				);
+			}
+//			
+			
+			function update_cart_on_refresh(){
+				$("#compare_cart").slideDown(500, function(){
+					$(this).css("display", "static");
+					$(this).css("position", "relative");
+					$(this).css("top", "25%");
+				});	
+				
+				compare_item_cookie_single = JSON.parse($.cookie("compare_item_cookie_single"));
+				product_sku = compare_item_cookie_single.sku;
+				count = compare_item_cookie_single.count;
+				compare_product_type = compare_item_cookie_single.product;
+				
+				compare_count = parseInt(count);
+				
+				product_sku_list = product_sku.split(',');
+				
 				btn_compare_check_enabled();
-////				alert("Already set cookie is: "+compare_item_cookie);
-				$.each(compare_item_cookie,function(index) {	
-//							alert(compare_item_cookie[index]);
-							$(".compare-checkbox#"+compare_item_cookie[index]).attr('checked', true);
-							get_item_image(compare_item_cookie[index],index+1);
+//				alert("Already set cookie is: "+product_sku_list);
+				$.each(product_sku_list,function(index) {	
+							alert(product_sku_list[index]);
+							$(".compare-checkbox#"+product_sku_list[index]).attr('checked', true);
+							get_item_image(product_sku_list[index],index+1,compare_product_type);
 					}
 				);
 			}
-//			
-			function get_item_image(id,compare_count) {
-//				alert("id= "+id+"\ncompare_count= "+compare_count);
+			
+			function get_item_image(id,compare_count,product_type) {
+				alert("id= "+id+"\ncompare_count= "+compare_count+"\nproduct class= "+product_type);
 				$.ajax({
 					type: "POST",
 					url: Drupal.settings.basePath + '/compare_item_get_image',
@@ -64,6 +105,8 @@
 //							$('table#compare-cart-table td:nth-child('+compare_count+') div.compare-product-image img').attr('src', product_image);
 							$('table#compare-cart-table td:nth-child('+compare_count+') div.compare-product-remove').html('<img src="'+remove_item+'"/>');
 							$('table#compare-cart-table tr:first-child td:nth-child('+compare_count+')').attr("id",id);
+							$('table#compare-cart-table').attr("class",product_type);
+							$('table#compare-cart-table tr:first-child td:nth-child('+compare_count+')').css('background-color','black');
 							
 //							var title_list = $("#compare_cart .compare-product-title");
 //							alert(title_list);
@@ -86,162 +129,310 @@
 			
 			
 			function remove_compare_cart_item(id){
-				$('table#compare-cart-table tr:first-child td#'+id).remove();
-				$('table#compare-cart-table tr:first-child td:nth-child(3)').after(
-					"<td name='compare_item' id='compare_item'>" +
-//					"	<div class='div_image compare-product compare-product-image'>" +
-//					"		<img src='/compare/sites/all/modules/compare_item/images/add_item.jpg' class='image' height='50px' width='50px' />" +
-//					"	</div>" +
-					"	<div class='remove_item compare-product-remove'></div>" +
-					"	<div class='compare-product-title compare-product'></div>" +
-					"</td>"
-				);
+				compare_item_cookie_single = JSON.parse($.cookie("compare_item_cookie_single"));
+				product_sku = compare_item_cookie_single.sku;
+				count = compare_item_cookie_single.count;
+				compare_product_type = compare_item_cookie_single.product;
+				
+				compare_cart_table_class = $('table#compare-cart-table').attr("class");
+				alert("compare_product_type = "+compare_product_type+"\ncompare_cart_table_class = "+compare_cart_table_class);
+				
+				if(compare_cart_table_class == compare_product_type){				
+					$('table#compare-cart-table tr:first-child td#'+id).remove();
+					$('table#compare-cart-table tr:first-child td:nth-child(3)').after(
+						"<td name='compare_item' id='compare_item'>" +
+	//					"	<div class='div_image compare-product compare-product-image'>" +
+	//					"		<img src='/compare/sites/all/modules/compare_item/images/add_item.jpg' class='image' height='50px' width='50px' />" +
+	//					"	</div>" +
+						"	<div class='remove_item compare-product-remove'></div>" +
+						"	<div class='compare-product-title compare-product'></div>" +
+						"</td>"
+					);
 
 //Removing the current id from cookie
-				remove_item_cookie = $.cookie("compare_item_cookie").split(',');
-//				alert("To remove"+remove_item_cookie+" "+id);
-				$.each(remove_item_cookie,function(index) {
-//							alert(compare_item_cookie[index]);
-							if (remove_item_cookie[index] == id) {
-								remove_item_cookie.splice(index,1);
-								return false;
-							}
-					}
-				);
-				$.cookie("compare_item_cookie", remove_item_cookie.join(','));
-//				alert("The id cookie has been set to => "+$.cookie("compare_item_cookie"));
-
-//DECREMENTING THE COUNT VALUE BY 1
-				compare_count = parseInt($.cookie("compare_count_cookie"));
-//				alert("The count BEFORE DECREMENT was = "+compare_count);
-				compare_count--;
-//				alert("The count has been DECREMENTED to = "+compare_count);
-
-//IF CART IS EMPTY REMOVE THE COOKIE						
-				if(compare_count == 0){
-					$.cookie("compare_item_cookie",null);
-					$.cookie("compare_count_cookie",null);
-					$.cookie("compare_product_type",null);
-				}
-				else {
-					$.cookie("compare_count_cookie",compare_count);
-//					alert("The cookie is now DECREMENTED TO = "+$.cookie("compare_count_cookie"));
-				}
 				
-				btn_compare_check_enabled();
+					product_sku_list = product_sku.split(',');
+					
+					alert("LIST before removal = "+product_sku_list+"\nProduct to remove = "+id);
+					
+					$.each(product_sku_list,function(index) {
+								alert("This value is: "+product_sku_list[index]);
+								if (product_sku_list[index] == id) {
+									product_sku_list.splice(index,1);
+									
+									alert("LIST after removal = "+product_sku_list+"\nProduct to remove = "+id);
+					//DECREMENTING THE COUNT VALUE BY 1
+									compare_count = parseInt(count);
+					//			alert("The count was = "+compare_count);
+									compare_count--;
+									
+									compare_item_cookie_single.sku = product_sku_list.join(',');
+									compare_item_cookie_single.count = compare_count;				
+					
+									$.cookie("compare_item_cookie_single",JSON.stringify(compare_item_cookie_single),{ path: '/' });
+					
+									btn_compare_check_enabled();
+									
+									alert("The cookie is: "+$.cookie("compare_item_cookie_single"));
+									
+									return false;
+								}
+						}
+					);
+					
+					
+	//IF CART IS EMPTY REMOVE THE COOKIE						
+					if(compare_count == 0){
+						$.cookie("compare_item_cookie_single",null,{ path: '/' });
+						$("#compare_cart").slideUp(100);
+						$('table#compare-cart-table').removeAttr("class");
+					}
+	//				else {
+	//					$.cookie("compare_count_cookie",compare_count,{ path: '/' });
+	////					alert("The cookie is now DECREMENTED TO = "+$.cookie("compare_count_cookie"));
+	//				}
+				}
+				if(compare_cart_table_class != compare_product_type){
+					alert("The Compare cart has been updated. It now contains product(s) of a different type.");
+					$(".compare-checkbox").attr('checked', false);
+					$("table#compare-cart-table tr:first-child td").each(function(index){
+						$(this).attr("id", "compare_item");
+						$(this).html(
+							"<div class='remove_item compare-product-remove'></div>" +
+							"<div class='compare-product-title compare-product'></div>"
+						);
+						$(this).removeAttr("style");//doesn't work in IE 6,7,8
+//						$(this).prop("style",null);
+						$('table#compare-cart-table').removeAttr("class");
+					});
+					update_cart_on_refresh();
+				}
 			}
 			
-			
+			function set_cookie(checkbox_id,product_type){
+//				alert("SKU IS="+checkbox_id+"\nPRODUCT ="+product_type);
+				var compare_item_cookie_single = new Object();
+				product_sku_list = new Array();
+				compare_count = 1;
+				compare_product_type = product_type;
+				
+				product_sku_list.push(checkbox_id);
+								
+				compare_item_cookie_single.sku = product_sku_list.join(',');
+				compare_item_cookie_single.count = compare_count;
+				compare_item_cookie_single.product = product_type;
+				
+//				alert("[1]	sku= "+compare_item_cookie_single.sku+"\ncount= "+compare_item_cookie_single.count+"\nproduct= "+compare_item_cookie_single.product);
+				
+				$.cookie("compare_item_cookie_single",JSON.stringify(compare_item_cookie_single),{ path: '/' });				
+			}
+			function update_cookie(sku,product_type){
+				
+				compare_item_cookie_single = JSON.parse($.cookie("compare_item_cookie_single"));
+				product_sku = compare_item_cookie_single.sku;
+				count = compare_item_cookie_single.count;
+				compare_product_type = compare_item_cookie_single.product;
+				
+				if(compare_product_type != product_type){
+					var clear_cart_answer = confirm("The cart contains product of a different type. Do you wish to clear the cart and this item?");
+					if(clear_cart_answer == true){
+//						alert("Cart will now be cleared.");
+						reset_compare_list();
+						set_cookie(sku,product_type);
+						$(".compare-checkbox#"+sku).attr('checked', true);
+//						$.cookie("compare_product_type",product_type,{ path: '/' });
+						return true;
+					}
+					else{
+//						alert("Cart will not be cleared.");
+						return false;
+					}
+				}
+				
+				
+				compare_count = parseInt(count);
+//			alert("The count was = "+compare_count);
+				compare_count++;
+//			alert("The count increased to = "+compare_count);
+				
+//			alert("PRODUCT SKU LIST= "+product_sku);
+//			alert("PRODUCT TO BE PUSHED= "+sku);
+				product_sku_list = product_sku.split(',');
+//			alert("SKU LIST = "+product_sku_list);
+				product_sku_list.push(sku);
+//			alert("After Pushing= "+product_sku_list);	
+				compare_item_cookie_single.sku = product_sku_list.join(',');
+				compare_item_cookie_single.count = compare_count;
+
+				
+//				alert("[2]	sku= "+compare_item_cookie_single.sku+"\ncount= "+compare_item_cookie_single.count+"\nproduct= "+compare_item_cookie_single.product);
+				
+				$.cookie("compare_item_cookie_single",JSON.stringify(compare_item_cookie_single),{ path: '/' });
+				
+				return true;
+			}
 			
 //WHEN THE ADD TO COMPARE OF A ITEM IS CHECKED THIS FUNCTION EXECUTES			
 			$(".compare-checkbox").live("click", function(){
 				var checkbox_id = $(this).attr("id");
 				var checkbox_class = $(this).attr("class").split(" ");
 				product_type = checkbox_class[1];
-//			alert("checkbox_id= "+checkbox_id+"\ncheckbox_class= "+checkbox_class+"\nproduct_type "+product_type);	
-				if($(this).is(':checked')) {				
-					if($.cookie("compare_product_type") != null){
-						compare_product_type = $.cookie("compare_product_type");
+											
+				if($(this).is(':checked')) {	
+					if($.cookie("compare_item_cookie_single") == null){
+//						alert("CHECKBOX IS="+checkbox_id+"\nPRODUCT TYPE="+product_type);
+						set_cookie(checkbox_id,product_type);
 					}
-					else {
-						$.cookie("compare_product_type",product_type);
-						compare_product_type = product_type;
+					else{
+//						alert("CHECKBOX IS="+checkbox_id);
+						if(!update_cookie(checkbox_id,product_type)){
+							return false;
+						}
+						
 					}
-//					alert("The compare product type is: "+product_type);
-//					alert("The compare product type cookie is: "+$.cookie("compare_product_type"));
-					
-					if(compare_product_type != product_type){
-						alert("The cart contains product of a different type. Please clear the cart before adding this item");
-						return false;
-					}
-					
-	//				alert(product_type);
-	//				$(this).attr("disabled", true);
-	//					alert("checkbox_id = "+checkbox_id);
-	//				var item = document.getElementById("compare_item");
-	//				item.id = checkbox_id;
-					compare_count++;
-//						alert("compare_count = "+compare_count); 
-	//Adding the current id to the cookie
-							compare_item_cookie = $.cookie("compare_item_cookie") ? $.cookie("compare_item_cookie").split(',') : new Array();
-							//THIS OPERATION IS NOT REQUIRED
-							//BECAUSE IF COOKIE IS ALREADY SET THEN THE CHECKBOX WILL BE CHECKED FOR THE ITEM
-							//SO CHECKING BECOMED UNNECCESARY
-							//KEEPING THIS FOR NOW BECAUSE ABOVE OPERATION HAS NOT BEEN IMPLEMENTED
-							var flag=1;//to check if the cookie for this item is already set
-	//						alert("Empty"+compare_item_cookie+" "+checkbox_id);
-							$.each(compare_item_cookie,function(index) {
-	//									alert(compare_item_cookie[index]);
-										if (compare_item_cookie[index] == checkbox_id) {
-											flag = 0;
-											return false;
-										}
-								}
-							);
-							if (flag == 1) {
-								compare_item_cookie.push(checkbox_id);
-	//							alert("New cookie item set"+compare_item_cookie+" "+checkbox_id+" the index value for 0"+compare_item_cookie[0]);
-							}
-							$.cookie("compare_item_cookie", compare_item_cookie.join(','));
-//							alert("The compare_item_cookie is = "+$.cookie("compare_item_cookie"));
-					
-	//				if($.cookie("item-id"+compare_count) == null) {
-	//					$.cookie("item-id"+compare_count,checkbox_id);
-	//					alert("A cookie is now set"+$.cookie("item-id"+compare_count));
-	//				}
 	
-	//if 4 items are added make all the other checkboxes disabled						
+//					alert($.cookie("compare_item_cookie_single"));
+
+					compare_item_cookie_single = JSON.parse($.cookie("compare_item_cookie_single"));
+					count = compare_item_cookie_single.count;
+					compare_count = parseInt(count);
+
+//					alert("RETREIVING COMPARE COUNT FROM COOKIE; VALUE IS = "+compare_count);
+//if 4 items are added make all the other checkboxes disabled				
 					if (compare_count == 4)	{
 						$(".compare-checkbox").attr("disabled", true);
 					}
 	//if more than 1 item has been added to compare cart make compare button enabled				
-					btn_compare_check_enabled();
+					btn_compare_check_enabled(compare_count);
 					
-					
-					if($.cookie("compare_count_cookie") != null){
-						compare_count = parseInt($.cookie("compare_count_cookie"));
-	//					alert("The count was = "+compare_count);
-						compare_count++;
-	//					alert("The count has been incremented to = "+compare_count);
-						$.cookie("compare_count_cookie",compare_count);
-	//					alert("The cookie is now = "+$.cookie("compare_count_cookie"));
-					}
-					else {
-						$.cookie("compare_count_cookie","1");
-	//					alert("The count cookie is now set to = "+$.cookie("compare_count_cookie"));
-					}
-//					alert("The count cookie is = "+$.cookie("compare_count_cookie"));
-	//get the added items image and title using ajax
-					compare_count = parseInt($.cookie("compare_count_cookie"));
-//					alert("compare_count="+compare_count);
-					get_item_image(checkbox_id,compare_count);
-	//				
-					
-	//				$.ajax({
-	//						type: "GET",
-	//						url: Drupal.settings.basePath + '/compare_item_get_image',
-	//						dataType: 'json',
-	//						data: "id=" + encodeURI(checkbox_id),
-	//						success: function(result){
-	//					
-	////					alert(result);
-	//
-	//								var image_element = document.getElementById(item.id).getElementsByTagName("img");
-	//								var span_element = document.getElementById(item.id).getElementsByTagName("span");
-	//								image_element[0].setAttribute("src", result);
-	////							span_element[0].setAttribute("title", "Remove");
-	//								span_element[0].innerHTML = "<img src='/compare/sites/all/modules/compare_item/images/remove.gif' />";
-	//					}
-	//				
-	//				});
-	
-	        
+//get the added items image and title using ajax
+					get_item_image(checkbox_id,compare_count,product_type);
+
 					$("#compare_cart").slideDown(500, function(){
 						$(this).css("display", "static");
 						$(this).css("position", "relative");
 						$(this).css("top", "25%");
 					});	
+
+					
 				}
+
+				
+
+				
+				
+////			alert("checkbox_id= "+checkbox_id+"\ncheckbox_class= "+checkbox_class+"\nproduct_type "+product_type);	
+//				if($(this).is(':checked')) {				
+//					if($.cookie("compare_product_type") != null){
+//						compare_product_type = $.cookie("compare_product_type");
+//					}
+//					else {
+//						$.cookie("compare_product_type",product_type,{ path: '/' });
+//						compare_product_type = product_type;
+//					}
+////					alert("The compare product type is: "+product_type);
+////					alert("The compare product type cookie is: "+$.cookie("compare_product_type"));
+//					
+//					if(compare_product_type != product_type){
+//						var clear_cart_answer = confirm("The cart contains product of a different type. Do you wish to clear the cart and this item?");
+//						if(clear_cart_answer == true){
+////							alert("Cart will now be cleared.");
+//							reset_compare_list();
+//							$(".compare-checkbox#"+checkbox_id).attr('checked', true);
+//							$.cookie("compare_product_type",product_type,{ path: '/' });
+//						}
+//						else{
+////							alert("Cart will not be cleared.");
+//							return false;
+//						}
+//					}
+//					
+//	//				alert(product_type);
+//	//				$(this).attr("disabled", true);
+//	//					alert("checkbox_id = "+checkbox_id);
+//	//				var item = document.getElementById("compare_item");
+//	//				item.id = checkbox_id;
+//					
+//	//Adding the current id to the cookie
+//							compare_item_cookie = $.cookie("compare_item_cookie") ? $.cookie("compare_item_cookie").split(',') : new Array();
+//							//THIS OPERATION IS NOT REQUIRED
+//							//BECAUSE IF COOKIE IS ALREADY SET THEN THE CHECKBOX WILL BE CHECKED FOR THE ITEM
+//							//SO CHECKING BECOMED UNNECCESARY
+//							//KEEPING THIS FOR NOW BECAUSE ABOVE OPERATION HAS NOT BEEN IMPLEMENTED
+//							var flag=1;//to check if the cookie for this item is already set
+//	//						alert("Empty"+compare_item_cookie+" "+checkbox_id);
+//							$.each(compare_item_cookie,function(index) {
+//	//									alert(compare_item_cookie[index]);
+//										if (compare_item_cookie[index] == checkbox_id) {
+//											flag = 0;
+//											return false;
+//										}
+//								}
+//							);
+//							if (flag == 1) {
+//								compare_item_cookie.push(checkbox_id);
+//	//							alert("New cookie item set"+compare_item_cookie+" "+checkbox_id+" the index value for 0"+compare_item_cookie[0]);
+//							}
+//							$.cookie("compare_item_cookie", compare_item_cookie.join(','),{ path: '/' });
+////							alert("The compare_item_cookie is = "+$.cookie("compare_item_cookie"));
+//					
+//	//				if($.cookie("item-id"+compare_count) == null) {
+//	//					$.cookie("item-id"+compare_count,checkbox_id,{ path: '/' });
+//	//					alert("A cookie is now set"+$.cookie("item-id"+compare_count));
+//	//				}
+//	
+//	//if 4 items are added make all the other checkboxes disabled						
+//					if (compare_count == 4)	{
+//						$(".compare-checkbox").attr("disabled", true);
+//					}
+//	//if more than 1 item has been added to compare cart make compare button enabled				
+//					btn_compare_check_enabled();
+//					
+//					
+//					if($.cookie("compare_count_cookie") != null){
+//						compare_count = parseInt($.cookie("compare_count_cookie"));
+//	//					alert("The count was = "+compare_count);
+//						compare_count++;
+//	//					alert("The count has been incremented to = "+compare_count);
+//						$.cookie("compare_count_cookie",compare_count,{ path: '/' });
+//	//					alert("The cookie is now = "+$.cookie("compare_count_cookie"));
+//					}
+//					else {
+//						$.cookie("compare_count_cookie","1",{ path: '/' });
+//	//					alert("The count cookie is now set to = "+$.cookie("compare_count_cookie"));
+//					}
+////					alert("The count cookie is = "+$.cookie("compare_count_cookie"));
+//	//get the added items image and title using ajax
+//					compare_count = parseInt($.cookie("compare_count_cookie"));
+////					alert("compare_count="+compare_count);
+//					get_item_image(checkbox_id,compare_count);
+//	//				
+//					
+//	//				$.ajax({
+//	//						type: "GET",
+//	//						url: Drupal.settings.basePath + '/compare_item_get_image',
+//	//						dataType: 'json',
+//	//						data: "id=" + encodeURI(checkbox_id),
+//	//						success: function(result){
+//	//					
+//	////					alert(result);
+//	//
+//	//								var image_element = document.getElementById(item.id).getElementsByTagName("img");
+//	//								var span_element = document.getElementById(item.id).getElementsByTagName("span");
+//	//								image_element[0].setAttribute("src", result);
+//	////							span_element[0].setAttribute("title", "Remove");
+//	//								span_element[0].innerHTML = "<img src='/compare/sites/all/modules/compare_item/images/remove.gif' />";
+//	//					}
+//	//				
+//	//				});
+//	
+//	        
+//					$("#compare_cart").slideDown(500, function(){
+//						$(this).css("display", "static");
+//						$(this).css("position", "relative");
+//						$(this).css("top", "25%");
+//					});	
+//				}
 				else {
 //					alert("this item will be removed......please please please !");
 					remove_compare_cart_item(checkbox_id);
@@ -252,7 +443,6 @@
 			$(".compare-product-remove").live('click', function(){
 //				$(this).hide("fast", function(){
 					var id = $(this).parent().attr("id");
-//					alert(id);
 					remove_compare_cart_item(id);
 
 					$(".compare-checkbox#"+id).attr('checked', false);
@@ -293,7 +483,7 @@
 //									}
 //							}
 //						);
-//						$.cookie("compare_item_cookie", remove_item_cookie.join(','));
+//						$.cookie("compare_item_cookie", remove_item_cookie.join(','),{ path: '/' });
 ////						alert("The id cookie has been set to => "+$.cookie("compare_item_cookie"));
 //
 ////DECREMENTING THE COUNT VALUE BY 1
@@ -309,7 +499,7 @@
 //							$.cookie("compare_product_type",null);
 //						}
 //						else {
-//							$.cookie("compare_count_cookie",compare_count);
+//							$.cookie("compare_count_cookie",compare_count,{ path: '/' });
 ////							alert("The cookie is now DECREMENTED TO = "+$.cookie("compare_count_cookie"));
 //						}
 //						
@@ -355,9 +545,7 @@
 				compare_count = 0;
 				
 //Removing the cookies
-				$.cookie("compare_item_cookie",null);
-				$.cookie("compare_count_cookie",null);
-				$.cookie("compare_product_type",null);
+				$.cookie("compare_item_cookie_single",null,{ path: '/' });
 				
 				$(".compare-checkbox").attr('checked', false);
 				
@@ -370,6 +558,9 @@
 						"<div class='remove_item compare-product-remove'></div>" +
 						"<div class='compare-product-title compare-product'></div>"
 					);
+					$(this).removeAttr("style");//doesn't work in IE 6,7,8
+//					$(this).prop("style",null);
+					$('table#compare-cart-table').removeAttr("class");
 //					$(this).children("img").attr("src", "/compare/sites/all/modules/compare_item/images/add_item.jpg");
 //					$(this).children("span").children("img").remove();
 				});
@@ -395,15 +586,20 @@
 				else {
 					document.getElementById("btn_compare").disabled = true;
 				}
-				return;
+//				return;
 			}
 			
 			$("#btn_compare").click(function() {
-				var product_type = $.cookie("compare_product_type");
+				compare_item_cookie_single = JSON.parse($.cookie("compare_item_cookie_single"));
+				product_sku = compare_item_cookie_single.sku;
+				count = compare_item_cookie_single.count;
+				compare_product_type = compare_item_cookie_single.product;
+				
+//				var product_type = $.cookie("compare_product_type");
 //				alert("The product is = "+$.cookie("compare_product_type"));
-				var link_compare_page = "http://localhost/compare/"+product_type+"/comparepage/";
+				var link_compare_page = "http://localhost"+Drupal.settings.basePath+compare_product_type+"/comparepage/";
 //				alert($.cookie("compare_item_cookie"));
-				var compare_product_sku_list = $.cookie("compare_item_cookie");
+				var compare_product_sku_list = product_sku;
 //				alert(compare_product_sku_list);
 				link_compare_page += compare_product_sku_list;
 				alert(link_compare_page);
